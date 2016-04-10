@@ -212,3 +212,24 @@ java.lang.NullPointerException
 	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:669)
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:608)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1515)
+
+!ENTRY org.eclipse.egit.core 4 0 2016-04-10 19:43:24.815
+!MESSAGE An exception occurred during push on URI ssh://Nina@192.168.2.75/volume1/homes/Nina/git/Workinghours/.git: ssh://Nina@192.168.2.75/volume1/homes/Nina/git/Workinghours/.git: fatal: '/volume1/homes/Nina/git/Workinghours/.git' does not appear to be a git repository
+
+!STACK 0
+org.eclipse.jgit.api.errors.TransportException: ssh://Nina@192.168.2.75/volume1/homes/Nina/git/Workinghours/.git: fatal: '/volume1/homes/Nina/git/Workinghours/.git' does not appear to be a git repository
+
+	at org.eclipse.jgit.api.PushCommand.call(PushCommand.java:164)
+	at org.eclipse.egit.core.op.PushOperation.run(PushOperation.java:228)
+	at org.eclipse.egit.ui.internal.push.PushOperationUI.execute(PushOperationUI.java:167)
+	at org.eclipse.egit.ui.internal.push.PushOperationUI$1.run(PushOperationUI.java:229)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55)
+Caused by: org.eclipse.jgit.errors.NoRemoteRepositoryException: ssh://Nina@192.168.2.75/volume1/homes/Nina/git/Workinghours/.git: fatal: '/volume1/homes/Nina/git/Workinghours/.git' does not appear to be a git repository
+
+	at org.eclipse.jgit.transport.TransportGitSsh.cleanNotFound(TransportGitSsh.java:208)
+	at org.eclipse.jgit.transport.TransportGitSsh$SshPushConnection.<init>(TransportGitSsh.java:346)
+	at org.eclipse.jgit.transport.TransportGitSsh.openPush(TransportGitSsh.java:166)
+	at org.eclipse.jgit.transport.PushProcess.execute(PushProcess.java:154)
+	at org.eclipse.jgit.transport.Transport.push(Transport.java:1200)
+	at org.eclipse.jgit.api.PushCommand.call(PushCommand.java:157)
+	... 4 more
