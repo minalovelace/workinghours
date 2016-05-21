@@ -76,9 +76,9 @@ class Datum
                     Integer.parseInt(splitDatumString[2]));
         }
 
-        if ((datumAsString.contains(".")) && (datumAsString.split(".").length == 3))
+        if ((datumAsString.contains(".")) && (datumAsString.split("[\\.]").length == 3))
         {
-            String[] splitDatumString = datumAsString.split(".");
+            String[] splitDatumString = datumAsString.split("[\\.]");
             int jahr = Integer.parseInt(splitDatumString[2]);
             /*
              * We add 2000 to the year, because with think that the user wrote
@@ -91,7 +91,7 @@ class Datum
             result = new Datum(jahr, Integer.parseInt(splitDatumString[1]), Integer.parseInt(splitDatumString[0]));
         }
 
-        if (result.isDatum())
+        if (result != null && result.isDatum())
         {
             return result;
         } else
