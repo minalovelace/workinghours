@@ -215,7 +215,7 @@ class Tag implements Comparable<Tag>
             return minutesFromBeginToEnd - getPause() - WORKING_DAY_MINUTES;
         } else if(isHourReduction())
         {
-        	return -480;
+        	return -WORKING_DAY_MINUTES;
         } else
         {
             return 0;
