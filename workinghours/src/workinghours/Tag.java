@@ -108,8 +108,15 @@ class Tag implements Comparable<Tag>
 
     public void setKommentar(String kommentar)
     {
-        m_kommentar = kommentar;
-        m_kommentarSet = true;
+    	if(!kommentar.isEmpty() && kommentar != null)
+    	{
+    		m_kommentar = kommentar;
+    		m_kommentarSet = true;
+    	}
+    	else
+    	{
+    		m_kommentarSet = false;
+    	}
     }
 
     public boolean isKommentarSet()
