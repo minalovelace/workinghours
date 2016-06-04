@@ -11,13 +11,13 @@ class Uhrzeit
     private final int m_hours;
     private final int m_minutes;
 
-    public Uhrzeit(int hours, int minutes)
+    Uhrzeit(int hours, int minutes)
     {
         m_hours = hours;
         m_minutes = minutes;
     }
 
-    public Uhrzeit(String uhrzeit)
+    Uhrzeit(String uhrzeit)
     {
         m_hours = stringToUhrzeit(uhrzeit).getHours();
         m_minutes = stringToUhrzeit(uhrzeit).getMinutes();

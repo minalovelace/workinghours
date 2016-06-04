@@ -3,7 +3,7 @@ package workinghours;
 import java.util.GregorianCalendar;
 import java.util.concurrent.ConcurrentHashMap;
 
-class Kalender
+public class Kalender
 {
 
     /*
@@ -81,7 +81,7 @@ class Kalender
         return result;
     }
 
-    public void putTag(Tag tag)
+    void putTag(Tag tag)
     {
         if (isConsistent() && (m_year == tag.getDatum().getYear()))
         {
@@ -94,7 +94,7 @@ class Kalender
         }
     }
 
-    public Tag getTag(Datum dayOfInterest)
+    Tag getTag(Datum dayOfInterest)
     {
         int dayOfYear = dayOfInterest.getDayOfYear();
         if (m_tage.containsKey(dayOfYear))
@@ -116,7 +116,7 @@ class Kalender
      * @return The Tag, which has been removed, if it was in the Kalender.
      *         Otherwise <code>null</code>.
      */
-    public Tag removeTag(Datum dayOfInterest)
+    Tag removeTag(Datum dayOfInterest)
     {
         int dayOfYear = dayOfInterest.getDayOfYear();
         return m_tage.remove(dayOfYear);

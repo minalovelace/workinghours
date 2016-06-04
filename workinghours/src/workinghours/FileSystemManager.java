@@ -55,8 +55,9 @@ public class FileSystemManager
     private int m_maxSavedActualCals = 64;
     private int m_maxSavedTotalCals = 256;
     private Integer m_tmpIndex = null;
+    private boolean m_unlockJerseyServer = false;
 
-    public FileSystemManager()
+    FileSystemManager()
     {
         readIniFile();
     }
@@ -69,6 +70,7 @@ public class FileSystemManager
         iniVars.put("maxSavedActualCals", "256");
         iniVars.put("maxSavedTotalCals", "64");
         iniVars.put("pdflatex", PDFLATEX_DEFAULT_MAC);
+        iniVars.put("ujips", "false");
 
         if (iniFile.exists())
         {
@@ -99,18 +101,21 @@ public class FileSystemManager
         setMaxSavedTotalCals(Integer.parseInt(iniVars.get("maxSavedTotalCals")));
         setPDFLATEX(iniVars.get("pdflatex"));
         setCopyPDFPath(iniVars.get("copyPDFPath"));
+        setUnlockJerseyServer(iniVars.get("ujips"));
     }
 
-    public void createKalender(int jahr)
+    Kalender createKalender(int jahr)
     {
         if ((jahr >= 1900) && (jahr <= 2300))
         {
             Kalender kal = new Kalender(jahr);
             saveKalender(kal);
+            return kal;
         }
+        return null;
     }
 
-    public void saveKalender(Kalender kal)
+    void saveKalender(Kalender kal)
     {
         kal.repairConsistency();
         try
@@ -164,7 +169,7 @@ public class FileSystemManager
         }
     }
 
-    public Kalender loadNewestKalender()
+    Kalender loadNewestKalender()
     {
         return loadKalender(getAllSavedCals().getLast());
     }
@@ -179,7 +184,7 @@ public class FileSystemManager
         }
     }
 
-    public void undo()
+    void undo()
     {
         if (m_tmpIndex == null)
         {
@@ -190,7 +195,7 @@ public class FileSystemManager
         }
     }
 
-    public void redo()
+    void redo()
     {
         if (m_tmpIndex != null)
         {
@@ -202,7 +207,7 @@ public class FileSystemManager
         }
     }
 
-    public Kalender loadTmpKalender()
+    Kalender loadTmpKalender()
     {
         if ((m_tmpIndex > 0) && (m_tmpIndex < getAllSavedCals().size()))
             return loadKalender(getAllSavedCals().get(m_tmpIndex.intValue()));
@@ -210,7 +215,7 @@ public class FileSystemManager
             return loadNewestKalender();
     }
 
-    public void generatePDF(Kalender kal)
+    String generatePDF(Kalender kal)
     {
         try
         {
@@ -227,13 +232,15 @@ public class FileSystemManager
             calToTeX(kal, bw);
             bw.close();
             callPDFLaTeX(file);
+            return PFAD.toAbsolutePath().toString() + "Workinghours.pdf";
         } catch (IOException e)
         {
             e.printStackTrace();
         }
+        return "";
     }
 
-    public void copyPDFToPath()
+    void copyPDFToPath()
     {
         if (null != getCopyPDFPath())
         {
@@ -1044,4 +1051,16 @@ public class FileSystemManager
     {
         m_copyPDFPath = copyPDFPath;
     }
+
+    boolean getUnlockJerseyServer()
+    {
+        return m_unlockJerseyServer;
+    }
+
+    private void setUnlockJerseyServer(String string)
+    {
+        if ("true".equalsIgnoreCase(string))
+            m_unlockJerseyServer = true;
+    }
+
 }

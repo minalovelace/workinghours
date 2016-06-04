@@ -3,7 +3,7 @@ package workinghours;
 class CommandLineInterpreterManager
 {
 
-    private FileSystemManager m_fsm = new FileSystemManager();
+    private KalenderManager m_km = new KalenderManager();
 
     CommandLineInterpreterManager()
     {
@@ -15,129 +15,61 @@ class CommandLineInterpreterManager
         {
             if (args[0].equals("-pdf"))
             {
-                getFsm().generatePDF(getFsm().loadNewestKalender());
-                getFsm().copyPDFToPath();
-            } else if (args[0].equals("-gui"))
+                getKm().generatePDF();
+            } else if (args[0].equals("-start"))
             {
-                // TODO launch gui
-//                final Display display = new Display();
-//                final Shell shell = new Shell(display);
-//                shell.setText("Arbeitszeit");
-//                // shell.setSize(600, 600);
-//                shell.setLayout(new FillLayout());
-//                @SuppressWarnings("unused")
-//                final GUIManager guim = new GUIManager(shell, SWT.EMBEDDED);
-//                shell.pack();
-//                shell.open();
-//                while (!shell.isDisposed())
-//                {
-//                    if (!display.readAndDispatch())
-//                    {
-//                        display.sleep();
-//                    }
-//                }
-//                display.dispose();
+                getKm().startJersey();
             } else if (args[0].equals("-man"))
             {
                 getManual();
             } else if (args[0].equals("-cc"))
             {
-                Kalender kal = getFsm().loadNewestKalender();
-                kal.repairConsistency();
-                getFsm().saveKalender(kal);
+                getKm().repairConsistency();
             } else
             {
                 getErrorMessage();
             }
         } else if (args.length == 2)
-
         {
             if (args[0].equals("-b"))
             {
-                Datum datum = new Datum(args[1]);
-                Kalender kal = getFsm().loadNewestKalender();
-                Tag tag = kal.getTag(datum);
-                tag.setBusinessTrip(true);
-                kal.putTag(tag);
-                getFsm().saveKalender(kal);
+                getKm().setBusinessTrip(args[1]);
             } else if (args[0].equals("-c"))
             {
                 try
                 {
-                    Integer jahr = Integer.valueOf(args[1]);
-                    getFsm().createKalender(jahr);
+                    getKm().createCalender(args[1]);
                 } catch (NumberFormatException e)
                 {
                     getErrorMessage();
                 }
             } else if (args[0].equals("-d"))
             {
-                Datum datum = new Datum(args[1]);
-                Kalender kal = getFsm().loadNewestKalender();
-                kal.removeTag(datum);
-                getFsm().saveKalender(kal);
+                getKm().deleteDay(args[1]);
             } else if (args[0].equals("-hr"))
             {
-                Datum datum = new Datum(args[1]);
-                Kalender kal = getFsm().loadNewestKalender();
-                Tag oldTag = kal.getTag(datum);
-                Tag newTag = new Tag(datum);
-                newTag.setKommentar(oldTag.getKommentar());
-                newTag.setHourReduction(true);
-                kal.putTag(newTag);
-                getFsm().saveKalender(kal);
+                getKm().setHourReduction(args[1]);
             } else if (args[0].equals("-i"))
             {
-                Datum datum = new Datum(args[1]);
-                Kalender kal = getFsm().loadNewestKalender();
-                Tag oldTag = kal.getTag(datum);
-                Tag newTag = new Tag(datum);
-                newTag.setKommentar(oldTag.getKommentar());
-                newTag.setIllness(true);
-                kal.putTag(newTag);
-                getFsm().saveKalender(kal);
+                getKm().setIllness(args[1]);
             } else if (args[0].equals("-s"))
             {
-                Datum datum = new Datum(args[1]);
-                Kalender kal = getFsm().loadNewestKalender();
-                Tag tag = kal.getTag(datum);
-                tag.setStaffTraining(true);
-                kal.putTag(tag);
-                getFsm().saveKalender(kal);
+                getKm().setStaffTraining(args[1]);
             } else if (args[0].equals("-v"))
             {
-                Datum datum = new Datum(args[1]);
-                Kalender kal = getFsm().loadNewestKalender();
-                Tag oldTag = kal.getTag(datum);
-                Tag newTag = new Tag(datum);
-                newTag.setKommentar(oldTag.getKommentar());
-                newTag.setVacation(true);
-                kal.putTag(newTag);
-                getFsm().saveKalender(kal);
+                getKm().setVacation(args[1]);
             }
         } else if (args.length == 3)
         {
             if (args[0].equals("-k"))
             {
-                Datum datum = new Datum(args[1]);
-                Kalender kal = getFsm().loadNewestKalender();
-                Tag tag = kal.getTag(datum);
-                tag.setKommentar(args[2]);
-                kal.putTag(tag);
-                getFsm().saveKalender(kal);
+                getKm().setKommentar(args[1], args[2]);
             }
         } else if (args.length == 5)
         {
             if (args[0].equals("-n"))
             {
-                Datum datum = new Datum(args[1]);
-                Uhrzeit beginn = new Uhrzeit(args[2]);
-                Uhrzeit ende = new Uhrzeit(args[3]);
-                Integer pause = Integer.parseInt(args[4]);
-                Tag tag = new Tag(datum, beginn, ende, pause, true, false, false);
-                Kalender kal = getFsm().loadNewestKalender();
-                kal.putTag(tag);
-                getFsm().saveKalender(kal);
+                getKm().setNewWorkingDay(args[1], args[2], args[3], args[4]);
             }
         } else
         {
@@ -201,6 +133,9 @@ class CommandLineInterpreterManager
         System.out.println("-v");
         System.out.println("     Followed by the date of a vacation.");
         System.out.println("");
+        System.out.println("-start");
+        System.out.println("     Starts the REST-Server.");
+        System.out.println("");
     }
 
     private void getErrorMessage()
@@ -209,8 +144,8 @@ class CommandLineInterpreterManager
                 .println("Error: Workinghours can't interpret your input. Try '-man' for the manual of Workinghours.");
     }
 
-    private FileSystemManager getFsm()
+    private KalenderManager getKm()
     {
-        return m_fsm;
+        return m_km;
     }
 }

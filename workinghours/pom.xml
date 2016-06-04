@@ -26,9 +26,20 @@
   </build>
   <dependencies>
   	<dependency>
+<<<<<<< Upstream, based on master
   		<groupId>com.google.code.gson</groupId>
   		<artifactId>gson</artifactId>
   		<version>2.7</version>
+=======
+  		<groupId>org.glassfish.jersey.containers</groupId>
+  		<artifactId>jersey-container-grizzly2-http</artifactId>
+  		<version>2.23.1</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>org.glassfish.jersey.containers</groupId>
+  		<artifactId>jersey-container-servlet</artifactId>
+  		<version>2.23.1</version>
+>>>>>>> 7e25e13 squash
   	</dependency>
   </dependencies>
 </project>
