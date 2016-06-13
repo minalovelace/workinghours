@@ -645,6 +645,22 @@ public class FileSystemManager
         int sigmaDelta = kal.getSigmaDelta(new Tag(datum));
         int simgaDeltaStunden = sigmaDelta / 60;
         int simgaDeltaMinuten = sigmaDelta % 60;
+        String sigmaDeltaStundenMinutenString = "";
+
+        if (simgaDeltaStunden > 0)
+        {
+            if (simgaDeltaStunden > 1)
+                sigmaDeltaStundenMinutenString += Integer.toString(simgaDeltaStunden) + " Stunden";
+            else
+                sigmaDeltaStundenMinutenString += Integer.toString(simgaDeltaStunden) + " Stunde";
+        }
+        if (simgaDeltaMinuten > 0)
+        {
+            if (simgaDeltaMinuten > 1)
+                sigmaDeltaStundenMinutenString += " " + Integer.toString(simgaDeltaMinuten) + " Minuten";
+            else
+                sigmaDeltaStundenMinutenString += " " + Integer.toString(simgaDeltaMinuten) + " Minute";
+        }
 
         bw.newLine();
         bw.write("\\newpage");
@@ -665,9 +681,8 @@ public class FileSystemManager
         bw.newLine();
         bw.write(" " + COLOR_RAND);
         bw.write("\\textbf{Überstunden:} & ");
-        // TODO improve the next line:
         bw.write(" " + getColoredSigmaDeltaAsString(sigmaDelta).replace(Integer.toString(sigmaDelta), "")
-                + Integer.toString(simgaDeltaStunden) + " Stunden " + Integer.toString(simgaDeltaMinuten) + " Minuten");
+                + sigmaDeltaStundenMinutenString);
         bw.write(" \\\\");
         bw.newLine();
         bw.write("%\\hline");
