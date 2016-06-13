@@ -35,7 +35,7 @@ public class FileSystemManager
     private static final String WH_CAL_DATA_FOLDER = "WHCalData";
     private static final String WH_CAL_DATA_ENDING = ".txt";
     private static final String REGEX_FOR_FILENAME = "^\\d\\d\\d\\d[-]\\d\\d[-]\\d\\d[T]\\d\\d[_]\\d\\d[_]\\d\\d[.][t][x][t]$";
-    private static final Path m_pfad = Paths.get(WH_CAL_DATA_FOLDER);
+    private static final Path PFAD = Paths.get(WH_CAL_DATA_FOLDER);
     private static final String COLOR_WOCHENENDE = "\\cellcolor{blue!15}";
     private static final String COLOR_RAND = "\\cellcolor{gray!40}";
     private static final String COLOR_ECKE = "\\cellcolor{gray!60}";
@@ -47,7 +47,8 @@ public class FileSystemManager
     private static final String COLOR_STUNDENREDUZIERUNG = "\\cellcolor{orange!80}";
     private static final String COLOR_SONSTIGER_KOMMENTAR = "\\cellcolor{pink!60!gray}";
     private static final String PDFLATEX_DEFAULT_MAC = "/Library/TeX/texbin/pdflatex";
-//    private static final String PDFLATEX_DEFAULT_WIN = "C:/Program Files/MiKTeX 2.9/miktex/bin/x64/pdflatex.exe";
+    // private static final String PDFLATEX_DEFAULT_WIN = "C:/Program
+    // Files/MiKTeX 2.9/miktex/bin/x64/pdflatex.exe";
     private static final String PDFLATEX_ARG = "-halt-on-error";
     private String m_pdflatex = PDFLATEX_DEFAULT_MAC;
     private String m_copyPDFPath;
@@ -62,7 +63,7 @@ public class FileSystemManager
 
     private void readIniFile()
     {
-        File iniFile = new File(m_pfad.toAbsolutePath().toString(), INIFILE);
+        File iniFile = new File(PFAD.toAbsolutePath().toString(), INIFILE);
         Map<String, String> iniVars = new HashMap<>();
         iniVars.put("copyPDFPath", null);
         iniVars.put("maxSavedActualCals", "256");
@@ -116,7 +117,7 @@ public class FileSystemManager
         {
             Gson gson = new Gson();
             String json = gson.toJson(kal);
-            File file = new File(m_pfad.toAbsolutePath().toString(), createCalName());
+            File file = new File(PFAD.toAbsolutePath().toString(), createCalName());
 
             if (!file.exists())
             {
@@ -138,7 +139,7 @@ public class FileSystemManager
 
     private Kalender loadKalender(String nameOfFile)
     {
-        File file = new File(m_pfad.toAbsolutePath().toString(), nameOfFile);
+        File file = new File(PFAD.toAbsolutePath().toString(), nameOfFile);
         String json = "";
 
         if (file.exists())
@@ -170,7 +171,7 @@ public class FileSystemManager
 
     private void deleteKalender(String nameOfFile)
     {
-        File file = new File(m_pfad.toAbsolutePath().toString(), nameOfFile);
+        File file = new File(PFAD.toAbsolutePath().toString(), nameOfFile);
         if (file.exists())
         {
             file.delete();
@@ -213,7 +214,7 @@ public class FileSystemManager
     {
         try
         {
-            File file = new File(m_pfad.toAbsolutePath().toString(), "Workinghours.tex");
+            File file = new File(PFAD.toAbsolutePath().toString(), "Workinghours.tex");
 
             if (!file.exists())
             {
@@ -236,7 +237,7 @@ public class FileSystemManager
     {
         if (null != getCopyPDFPath())
         {
-            File sourcePDF = new File(m_pfad.toAbsolutePath().toString(), "Workinghours.pdf");
+            File sourcePDF = new File(PFAD.toAbsolutePath().toString(), "Workinghours.pdf");
 
             if (sourcePDF.exists())
             {
@@ -328,7 +329,7 @@ public class FileSystemManager
          * end of pages of the detailed months and begin of the statistics
          */
 
-        // TODO statistics
+        statisticsTeX(kal, bw);
 
         /* end of pdf-file */
 
@@ -615,6 +616,101 @@ public class FileSystemManager
         }
     }
 
+    private void statisticsTeX(Kalender kal, BufferedWriter bw) throws IOException
+    {
+        int urlaubstage = 0;
+        int ueberstundentage = 0;
+        int krankheitstage = 0;
+        int dienstreisentage = 0;
+        int fortbildungstage = 0;
+
+        Datum datum = new Datum(kal.getYear(), 1, 1);
+
+        while (datum.getYear() == kal.getYear())
+        {
+            if (kal.getTag(datum).isVacation())
+                urlaubstage++;
+            if (kal.getTag(datum).isHourReduction())
+                ueberstundentage++;
+            if (kal.getTag(datum).isIllness())
+                krankheitstage++;
+            if (kal.getTag(datum).isBusinessTrip())
+                dienstreisentage++;
+            if (kal.getTag(datum).isStaffTraining())
+                fortbildungstage++;
+            datum.addToDayOfYear(1);
+        }
+
+        datum.addToDayOfYear(-1);
+        int sigmaDelta = kal.getSigmaDelta(new Tag(datum));
+        int simgaDeltaStunden = sigmaDelta / 60;
+        int simgaDeltaMinuten = sigmaDelta % 60;
+
+        bw.newLine();
+        bw.write("\\newpage");
+        bw.newLine();
+        bw.newLine();
+        bw.write("\\vspace*{8mm}\\begin{center}");
+        bw.newLine();
+        bw.write("\\Huge Statistik ");
+        bw.newLine();
+        bw.write("\\end{center}");
+        bw.newLine();
+        bw.newLine();
+        bw.write("\\renewcommand{\\arraystretch}{1.4}");
+        bw.newLine();
+        bw.write("\\vspace*{8mm}\\begin{tabular}[t]{cc}");
+        bw.newLine();
+        bw.write("%\\hline");
+        bw.newLine();
+        bw.write(" " + COLOR_RAND);
+        bw.write("\\textbf{Überstunden:} & ");
+        // TODO improve the next line:
+        bw.write(" " + getColoredSigmaDeltaAsString(sigmaDelta).replace(Integer.toString(sigmaDelta), "")
+                + Integer.toString(simgaDeltaStunden) + " Stunden " + Integer.toString(simgaDeltaMinuten) + " Minuten");
+        bw.write(" \\\\");
+        bw.newLine();
+        bw.write("%\\hline");
+        bw.newLine();
+        bw.write(" " + COLOR_RAND);
+        bw.write("\\textbf{Eingetragene Urlaubstage:} & ");
+        bw.write(" " + COLOR_URLAUB + Integer.toString(urlaubstage));
+        bw.write(" \\\\");
+        bw.newLine();
+        bw.write("%\\hline");
+        bw.newLine();
+        bw.write(" " + COLOR_RAND);
+        bw.write("\\textbf{Überstundenreduzierungstage:} & ");
+        bw.write(" " + COLOR_STUNDENREDUZIERUNG + Integer.toString(ueberstundentage));
+        bw.write(" \\\\");
+        bw.newLine();
+        bw.write("%\\hline");
+        bw.newLine();
+        bw.write(" " + COLOR_RAND);
+        bw.write("\\textbf{Krankheitstage:} & ");
+        bw.write(" " + COLOR_KRANKHEITSTAG + Integer.toString(krankheitstage));
+        bw.write(" \\\\");
+        bw.newLine();
+        bw.write("%\\hline");
+        bw.newLine();
+        bw.write(" " + COLOR_RAND);
+        bw.write("\\textbf{Auf Dienstreise verbrachte Tage:} & ");
+        bw.write(" " + COLOR_DIENSTREISE + Integer.toString(dienstreisentage));
+        bw.write(" \\\\");
+        bw.newLine();
+        bw.write("%\\hline");
+        bw.newLine();
+        bw.write(" " + COLOR_RAND);
+        bw.write("\\textbf{Auf Fortbildung verbrachte Tage:} & ");
+        bw.write(" " + COLOR_FORTBILDUNG + Integer.toString(fortbildungstage));
+        bw.write(" \\\\");
+        bw.newLine();
+        bw.write("%\\hline");
+        bw.newLine();
+        bw.write("\\end{tabular}");
+        bw.newLine();
+    }
+
     private String tagToCellInFrontPageMonthTeX(Tag tag)
     {
         String dayAsString = Integer.toString(tag.getDatum().getDay());
@@ -798,7 +894,7 @@ public class FileSystemManager
      */
     private LinkedList<String> getAllSavedCals()
     {
-        final File whCalDataDir = m_pfad.toFile();
+        final File whCalDataDir = PFAD.toFile();
         if (whCalDataDir.isDirectory())
         {
             FilenameFilter filter = new FilenameFilter()
