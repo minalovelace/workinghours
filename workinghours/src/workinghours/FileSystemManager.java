@@ -675,7 +675,7 @@ public class FileSystemManager
         bw.newLine();
         bw.write("\\renewcommand{\\arraystretch}{1.4}");
         bw.newLine();
-        bw.write("\\vspace*{8mm}\\begin{tabular}[t]{cc}");
+        bw.write("\\vspace*{8mm}\\begin{tabular}[t]{rc}");
         bw.newLine();
         bw.write("%\\hline");
         bw.newLine();
