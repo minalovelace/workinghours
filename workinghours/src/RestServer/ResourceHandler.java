@@ -22,18 +22,27 @@ public class ResourceHandler
     }
 
     @GET
-    @Path("css/{fileName}")
-    public String cssFiles(@PathParam("fileName") String fileName) throws IOException
+    @Path("{fileName}")
+    public String rootResourceFiles(@PathParam("fileName") String fileName) throws IOException
     {
-        return new String(fileLoader("css/" + fileName), "UTF-8");
+        return new String(fileLoader(fileName), "UTF-8");
     }
 
     @GET
     @Produces("text/javascript")
-    @Path("lib/angular/{fileName}")
-    public Response angularFiles(@PathParam("fileName") String fileName) throws IOException
+    @Path("node_modules/{subResources:.*}")
+    public Response nodeModules(@PathParam("subResources") String subResources) throws IOException
     {
-        String responseParam = new String(fileLoader("lib/angular/" + fileName), "UTF-8");
+        String responseParam = new String(fileLoader("node_modules/" + subResources), "UTF-8");
+        return Response.ok(responseParam).build();
+    }
+
+    @GET
+    @Produces("text/javascript")
+    @Path("typings/{subResources:.*}")
+    public Response typings(@PathParam("subResources") String subResources) throws IOException
+    {
+        String responseParam = new String(fileLoader("typings/" + subResources), "UTF-8");
         return Response.ok(responseParam).build();
     }
 
@@ -42,7 +51,7 @@ public class ResourceHandler
     @Path("app/{fileName}")
     public Response appFiles(@PathParam("fileName") String fileName) throws IOException
     {
-        String responseParam = new String(fileLoader("lib/angular/" + fileName), "UTF-8");
+        String responseParam = new String(fileLoader("app/" + fileName), "UTF-8");
         return Response.ok(responseParam).build();
     }
 
