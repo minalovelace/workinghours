@@ -16,7 +16,7 @@ class CommandLineInterpreterManager
             if (args[0].equals("-pdf"))
             {
                 getKm().generatePDF();
-            } else if (args[0].equals("-start"))
+            } else if (args[0].equals("-r"))
             {
                 getKm().startJersey();
             } else if (args[0].equals("-man"))
@@ -127,14 +127,14 @@ class CommandLineInterpreterManager
         System.out.println("-pdf");
         System.out.println("     This command produces the pdf-file.");
         System.out.println("");
+        System.out.println("-r");
+        System.out.println("     Starts the REST-Server.");
+        System.out.println("");
         System.out.println("-s");
         System.out.println("     Followed by the date of a day, which is a staff training day.");
         System.out.println("");
         System.out.println("-v");
         System.out.println("     Followed by the date of a vacation.");
-        System.out.println("");
-        System.out.println("-start");
-        System.out.println("     Starts the REST-Server.");
         System.out.println("");
     }
 
