@@ -4,7 +4,7 @@
     <!--ANT 1.7 is required                                        -->
     <!--define folder properties-->
     <property name="dir.buildfile" value="."/>
-    <property name="dir.workspace" value="${dir.buildfile}/../.."/>
+    <property name="dir.workspace" value="/Users/Nina/projects/workinghours"/>
     <property name="dir.jarfile" value="/Users/Nina/Desktop"/>
     <target name="create_run_jar">
         <jar destfile="${dir.jarfile}/Workinghours.jar" filesetmanifest="mergewithoutmain">
@@ -12,10 +12,8 @@
                 <attribute name="Main-Class" value="workinghours.Main"/>
                 <attribute name="Class-Path" value="."/>
             </manifest>
-            <fileset dir="${dir.workspace}/workinghours/bin"/>
-            <zipfileset excludes="META-INF/*.SF" src="${dir.workspace}/GSON/gson-2.6.1.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="${dir.workspace}/GSON/gson-2.6.1-sources.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="${dir.workspace}/GSON/gson-2.6.1-javadoc.jar"/>
+            <fileset dir="/Users/Nina/git/workinghours/workinghours/target/classes"/>
+            <zipfileset excludes="META-INF/*.SF" src="/Users/Nina/.m2/repository/com/google/code/gson/gson/2.7/gson-2.7.jar"/>
         </jar>
     </target>
 </project>
