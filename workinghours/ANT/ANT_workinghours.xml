@@ -4,7 +4,7 @@
     <!--ANT 1.7 is required                                        -->
     <!--define folder properties-->
     <property name="dir.buildfile" value="."/>
-    <property name="dir.workspace" value="/Users/Nina/projects/workinghours"/>
+    <property name="dir.workspace" value="/Users/Nina/projects/testAngular"/>
     <property name="dir.jarfile" value="/Users/Nina/Desktop"/>
     <target name="create_run_jar">
         <jar destfile="${dir.jarfile}/Workinghours.jar" filesetmanifest="mergewithoutmain">
@@ -12,14 +12,8 @@
                 <attribute name="Main-Class" value="workinghours.Main"/>
                 <attribute name="Class-Path" value="."/>
             </manifest>
-<<<<<<< Upstream, based on master
             <fileset dir="/Users/Nina/git/workinghours/workinghours/target/classes"/>
             <zipfileset excludes="META-INF/*.SF" src="/Users/Nina/.m2/repository/com/google/code/gson/gson/2.7/gson-2.7.jar"/>
-=======
-            <fileset dir="${dir.workspace}/workinghours/target/classes"/>
-            <zipfileset excludes="META-INF/*.SF" src="${dir.workspace}/GSON/gson-2.6.1.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="${dir.workspace}/GSON/gson-2.6.1-sources.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="${dir.workspace}/GSON/gson-2.6.1-javadoc.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="/Users/Nina/.m2/repository/org/glassfish/jersey/containers/jersey-container-grizzly2-http/2.23.1/jersey-container-grizzly2-http-2.23.1.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="/Users/Nina/.m2/repository/org/glassfish/hk2/external/javax.inject/2.4.0-b34/javax.inject-2.4.0-b34.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="/Users/Nina/.m2/repository/org/glassfish/grizzly/grizzly-http-server/2.3.23/grizzly-http-server-2.3.23.jar"/>
@@ -41,7 +35,6 @@
             <zipfileset excludes="META-INF/*.SF" src="/Users/Nina/.m2/repository/javax/ws/rs/javax.ws.rs-api/2.0.1/javax.ws.rs-api-2.0.1.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="/Users/Nina/.m2/repository/org/glassfish/jersey/containers/jersey-container-servlet/2.23.1/jersey-container-servlet-2.23.1.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="/Users/Nina/.m2/repository/org/glassfish/jersey/containers/jersey-container-servlet-core/2.23.1/jersey-container-servlet-core-2.23.1.jar"/>
->>>>>>> 7e25e13 squash
         </jar>
     </target>
 </project>

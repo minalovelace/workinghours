@@ -11,12 +11,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-<<<<<<< Upstream, based on master
-=======
-	<classpathentry kind="lib" path="/Users/Nina/de/Nina/projects/workinghours/GSON/gson-2.6.1.jar"/>
-	<classpathentry kind="lib" path="/Users/Nina/de/Nina/projects/workinghours/GSON/gson-2.6.1-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/Nina/de/Nina/projects/workinghours/GSON/gson-2.6.1-javadoc.jar"/>
->>>>>>> 7e25e13 squash
 	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>
