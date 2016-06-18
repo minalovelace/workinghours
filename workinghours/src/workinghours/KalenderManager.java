@@ -7,6 +7,7 @@ import java.util.Scanner;
 
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
+import org.glassfish.jersey.server.ResourceConfig;
 
 public class KalenderManager
 {
@@ -160,7 +161,7 @@ public class KalenderManager
 
         try
         {
-            // Use these lines of code to omit the output of Jersey. One can
+			// Use these lines of code to omit the output of Jersey. One can
             // also stream this output to a logfile.
             // PrintStream err = new PrintStream(new OutputStream()
             // {
@@ -172,7 +173,9 @@ public class KalenderManager
             // });
             // PrintStream oldSysErr = System.err;
             // System.setErr(err);
-            final HttpServer server = GrizzlyHttpServerFactory.createHttpServer(BASE_URI, false);
+			ResourceConfig configuration = new ResourceConfig();
+			configuration.packages(true, "RestServer");
+            final HttpServer server = GrizzlyHttpServerFactory.createHttpServer(BASE_URI, configuration, false);
             Runtime.getRuntime().addShutdownHook(new Thread(server::shutdownNow));
             server.start();
             System.out.println("------------------------------");

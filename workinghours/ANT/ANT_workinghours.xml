@@ -6,6 +6,10 @@
     <property name="dir.buildfile" value="."/>
     <property name="dir.workspace" value="/Users/Nina/projects/testAngular"/>
     <property name="dir.jarfile" value="/Users/Nina/Desktop"/>
+    <property name="dir.webapp" value="${dir.buildfile}/../webapp"/>
+    <copy todir="${dir.jarfile}/webapp/">
+        <fileset dir="${dir.webapp}"/>
+    </copy>
     <target name="create_run_jar">
         <jar destfile="${dir.jarfile}/Workinghours.jar" filesetmanifest="mergewithoutmain">
             <manifest>
