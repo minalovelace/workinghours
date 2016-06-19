@@ -4,7 +4,7 @@
     <!--ANT 1.7 is required                                        -->
     <!--define folder properties-->
     <property name="dir.buildfile" value="."/>
-    <property name="dir.workspace" value="/Users/Nina/projects/testAngular"/>
+    <property name="dir.workspace" value="/Users/Nina/projects/workinghours/workinghours"/>
     <property name="dir.jarfile" value="/Users/Nina/Desktop"/>
     <property name="dir.webapp" value="${dir.buildfile}/../webapp"/>
     <copy todir="${dir.jarfile}/webapp/">

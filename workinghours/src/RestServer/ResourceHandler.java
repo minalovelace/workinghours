@@ -9,6 +9,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriBuilder;
 
 @Path("/")
 public class ResourceHandler
@@ -16,9 +17,9 @@ public class ResourceHandler
     private final String RELATIVE_BASE_PATH = "webapp/";
 
     @GET
-    public String index() throws IOException
+    public Response index() throws IOException
     {
-        return new String(fileLoader("index.html"), "UTF-8");
+        return Response.seeOther(UriBuilder.fromPath("index.html").build()).build();
     }
 
     @GET
