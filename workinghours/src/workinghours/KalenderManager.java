@@ -153,15 +153,15 @@ public class KalenderManager
 
     void startJersey()
     {
-        if (!getFsm().getUnlockJerseyServer())
+        if (!getFsm().isJerseyServerUnlocked())
         {
             System.out.println("This feature is not implemented yet.");
             // return;
         }
 
-        try(Scanner console = new Scanner(System.in))
+        try (Scanner console = new Scanner(System.in))
         {
-			// Use these lines of code to omit the output of Jersey. One can
+            // Use these lines of code to omit the output of Jersey. One can
             // also stream this output to a logfile.
             // PrintStream err = new PrintStream(new OutputStream()
             // {
@@ -173,8 +173,8 @@ public class KalenderManager
             // });
             // PrintStream oldSysErr = System.err;
             // System.setErr(err);
-			ResourceConfig configuration = new ResourceConfig();
-			configuration.packages(true, "RestServer");
+            ResourceConfig configuration = new ResourceConfig();
+            configuration.packages(true, "restserver");
             final HttpServer server = GrizzlyHttpServerFactory.createHttpServer(BASE_URI, configuration, false);
             Runtime.getRuntime().addShutdownHook(new Thread(server::shutdownNow));
             server.start();

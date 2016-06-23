@@ -1052,7 +1052,7 @@ public class FileSystemManager
         m_copyPDFPath = copyPDFPath;
     }
 
-    boolean getUnlockJerseyServer()
+    boolean isJerseyServerUnlocked()
     {
         return m_unlockJerseyServer;
     }

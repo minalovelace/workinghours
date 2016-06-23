@@ -1,4 +1,4 @@
-package RestServer;
+package restserver;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -30,8 +30,8 @@ public class ResourceHandler
     }
 
     @GET
-    @Produces("text/javascript")
     @Path("node_modules/{subResources:.*}")
+    @Produces("text/javascript")
     public Response nodeModules(@PathParam("subResources") String subResources) throws IOException
     {
         String responseParam = new String(fileLoader("node_modules/" + subResources), "UTF-8");
@@ -39,8 +39,8 @@ public class ResourceHandler
     }
 
     @GET
-    @Produces("text/javascript")
     @Path("typings/{subResources:.*}")
+    @Produces("text/javascript")
     public Response typings(@PathParam("subResources") String subResources) throws IOException
     {
         String responseParam = new String(fileLoader("typings/" + subResources), "UTF-8");
@@ -48,8 +48,8 @@ public class ResourceHandler
     }
 
     @GET
-    @Produces("text/javascript")
     @Path("app/{fileName}")
+    @Produces("text/javascript")
     public Response appFiles(@PathParam("fileName") String fileName) throws IOException
     {
         String responseParam = new String(fileLoader("app/" + fileName), "UTF-8");
