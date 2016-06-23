@@ -23,10 +23,35 @@ public class ResourceHandler
     }
 
     @GET
-    @Path("{fileName}")
-    public String rootResourceFiles(@PathParam("fileName") String fileName) throws IOException
+    @Path("index.html")
+    @Produces("text/html")
+    public String rootResourceIndex() throws IOException
     {
-        return new String(fileLoader(fileName), "UTF-8");
+        return new String(fileLoader("index.html"), "UTF-8");
+    }
+
+    @GET
+    @Path("styles.css")
+    @Produces("text/css")
+    public String rootResourceStyles() throws IOException
+    {
+        return new String(fileLoader("styles.css"), "UTF-8");
+    }
+
+    @GET
+    @Path("favicon.ico")
+    @Produces("media/image")
+    public String rootResourceFavIcon() throws IOException
+    {
+        return new String(fileLoader("favicon.ico"), "UTF-8");
+    }
+
+    @GET
+    @Path("systemjs.config.js")
+    @Produces("text/javascript")
+    public String rootResourceSystemConfigJs() throws IOException
+    {
+        return new String(fileLoader("systemjs.config.js"), "UTF-8");
     }
 
     @GET
