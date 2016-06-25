@@ -81,6 +81,24 @@ public class ResourceHandler
         return Response.ok(responseParam).build();
     }
 
+    @GET
+    @Path("app/toh/{fileName}")
+    @Produces("text/javascript")
+    public Response appToHFiles(@PathParam("fileName") String fileName) throws IOException
+    {
+        String responseParam = new String(fileLoader("app/toh/" + fileName), "UTF-8");
+        return Response.ok(responseParam).build();
+    }
+
+    @GET
+    @Path("app/wiki/{fileName}")
+    @Produces("text/javascript")
+    public Response appWikiFiles(@PathParam("fileName") String fileName) throws IOException
+    {
+        String responseParam = new String(fileLoader("app/wiki/" + fileName), "UTF-8");
+        return Response.ok(responseParam).build();
+    }
+
     private byte[] fileLoader(String relPath) throws IOException
     {
         java.nio.file.Path path = Paths.get(RELATIVE_BASE_PATH + relPath);

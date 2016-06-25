@@ -16,7 +16,7 @@ var Observable_1 = require('rxjs/Observable');
 var HeroService = (function () {
     function HeroService(http) {
         this.http = http;
-        this.heroesUrl = 'app/heroes'; // URL to web API
+        this.heroesUrl = 'api/heroes'; // URL to web API
     }
     HeroService.prototype.getHeroes = function () {
         return this.http.get(this.heroesUrl)
