@@ -33,7 +33,7 @@ var HeroListComponent = (function () {
     HeroListComponent = __decorate([
         core_1.Component({
             selector: 'hero-list',
-            templateUrl: 'app/toh/hero-list.component.html',
+            templateUrl: 'app/hero-list.component.html',
             providers: [hero_service_1.HeroService]
         }), 
         __metadata('design:paramtypes', [hero_service_1.HeroService])

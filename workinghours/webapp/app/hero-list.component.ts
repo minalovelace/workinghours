@@ -1,11 +1,11 @@
 // Observable Version
 import { Component, OnInit } from '@angular/core';
-import { Hero }              from '../hero';
+import { Hero }              from './hero';
 import { HeroService }       from './hero.service';
 
 @Component({
   selector: 'hero-list',
-  templateUrl: 'app/toh/hero-list.component.html',
+  templateUrl: 'app/hero-list.component.html',
   providers: [ HeroService ]
 })
 export class HeroListComponent implements OnInit {

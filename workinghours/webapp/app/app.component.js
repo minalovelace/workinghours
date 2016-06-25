@@ -13,7 +13,9 @@ var router_deprecated_1 = require('@angular/router-deprecated');
 var http_1 = require('@angular/http');
 //Add the RxJS Observable operators we need in this app.
 require('./rxjs-operators');
+var hero_list_component_1 = require('./hero-list.component');
 var wiki_component_1 = require('./wiki/wiki.component');
+var wikipedia_service_1 = require('./wiki/wikipedia.service');
 var dashboard_component_1 = require('./dashboard.component');
 var heroes_component_1 = require('./heroes.component');
 var hero_detail_component_1 = require('./hero-detail.component');
@@ -25,13 +27,14 @@ var AppComponent = (function () {
     AppComponent = __decorate([
         core_1.Component({
             selector: 'my-app',
-            template: "\n    <h1>{{title}}</h1>\n    <nav>\n      <a [routerLink]=\"['Dashboard']\">Dashboard</a>\n      <a [routerLink]=\"['Heroes']\">Heroes</a>\n    </nav>\n    <router-outlet></router-outlet>\n    <my-wiki></my-wiki>\n  ",
+            template: "\n    <h1>{{title}}</h1>\n    <nav>\n      <a [routerLink]=\"['Dashboard']\">Dashboard</a>\n      <a [routerLink]=\"['Heroes']\">Heroes</a>\n    </nav>\n    <router-outlet></router-outlet>\n    <hero-list></hero-list>\n    <my-wiki></my-wiki>\n  ",
             styleUrls: ['app/app.component.css'],
-            directives: [router_deprecated_1.ROUTER_DIRECTIVES, wiki_component_1.WikiComponent],
+            directives: [router_deprecated_1.ROUTER_DIRECTIVES, wiki_component_1.WikiComponent, hero_list_component_1.HeroListComponent],
             providers: [
                 http_1.HTTP_PROVIDERS,
                 router_deprecated_1.ROUTER_PROVIDERS,
-                hero_service_1.HeroService
+                hero_service_1.HeroService,
+                wikipedia_service_1.WikipediaService
             ]
         }),
         router_deprecated_1.RouteConfig([

@@ -8,63 +8,54 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+// Observable Version
 var core_1 = require('@angular/core');
 var http_1 = require('@angular/http');
-require('rxjs/add/operator/toPromise');
+var http_2 = require('@angular/http');
+var Observable_1 = require('rxjs/Observable');
 var HeroService = (function () {
     function HeroService(http) {
         this.http = http;
-        this.heroesUrl = 'api/heroes'; // URL to web api
+        this.heroesUrl = 'api/heroes'; // URL to web API
+        this.heroUrl = 'api/hero'; // URL to web API
     }
     HeroService.prototype.getHeroes = function () {
         return this.http.get(this.heroesUrl)
-            .toPromise()
-            .then(function (response) { return response.json().data; })
+            .map(this.extractData)
             .catch(this.handleError);
     };
-    HeroService.prototype.getHero = function (id) {
-        return this.getHeroes()
-            .then(function (heroes) { return heroes.filter(function (hero) { return hero.id === id; })[0]; });
-    };
-    HeroService.prototype.save = function (hero) {
-        if (hero.id) {
-            return this.put(hero);
-        }
-        return this.post(hero);
+    HeroService.prototype.addHero = function (name) {
+        var body = JSON.stringify({ name: name });
+        var headers = new http_2.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_2.RequestOptions({ headers: headers });
+        return this.http.post(this.heroesUrl, body, options)
+            .map(this.extractData)
+            .catch(this.handleError);
     };
     HeroService.prototype.delete = function (hero) {
-        var headers = new http_1.Headers();
-        headers.append('Content-Type', 'application/json');
-        var url = this.heroesUrl + "/" + hero.id;
-        return this.http
-            .delete(url, headers)
-            .toPromise()
+        var body = JSON.stringify({ name: name });
+        var headers = new http_2.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_2.RequestOptions({ headers: headers });
+        return this.http.post(this.heroesUrl, body, options)
+            .map(this.extractData)
             .catch(this.handleError);
     };
-    // Add new Hero
-    HeroService.prototype.post = function (hero) {
-        var headers = new http_1.Headers({
-            'Content-Type': 'application/json' });
-        return this.http
-            .post(this.heroesUrl, JSON.stringify(hero), { headers: headers })
-            .toPromise()
-            .then(function (res) { return res.json().data; })
+    HeroService.prototype.save = function (hero) {
+        return this.http.get(this.heroUrl + hero.name)
+            .map(this.extractData)
             .catch(this.handleError);
     };
-    // Update existing Hero
-    HeroService.prototype.put = function (hero) {
-        var headers = new http_1.Headers();
-        headers.append('Content-Type', 'application/json');
-        var url = this.heroesUrl + "/" + hero.id;
-        return this.http
-            .put(url, JSON.stringify(hero), { headers: headers })
-            .toPromise()
-            .then(function () { return hero; })
-            .catch(this.handleError);
+    HeroService.prototype.extractData = function (res) {
+        var body = res.json();
+        return body.data || {};
     };
     HeroService.prototype.handleError = function (error) {
-        console.error('An error occurred', error);
-        return Promise.reject(error.message || error);
+        // In a real world app, we might use a remote logging infrastructure
+        // We'd also dig deeper into the error to get a better message
+        var errMsg = (error.message) ? error.message :
+            error.status ? error.status + " - " + error.statusText : 'Server error';
+        console.error(errMsg); // log to console instead
+        return Observable_1.Observable.throw(errMsg);
     };
     HeroService = __decorate([
         core_1.Injectable(), 
@@ -73,4 +64,12 @@ var HeroService = (function () {
     return HeroService;
 }());
 exports.HeroService = HeroService;
+/*
+  private heroesUrl = 'app/heroes.json'; // URL to JSON file
+*/
+/*
+Copyright 2016 Google Inc. All Rights Reserved.
+Use of this source code is governed by an MIT-style license that
+can be found in the LICENSE file at http://angular.io/license
+*/ 
 //# sourceMappingURL=hero.service.js.map

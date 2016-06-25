@@ -5,7 +5,9 @@ import { HTTP_PROVIDERS } from '@angular/http';
 //Add the RxJS Observable operators we need in this app.
 import './rxjs-operators';
 
-import { WikiComponent } from './wiki/wiki.component';
+import { HeroListComponent }        from './hero-list.component';
+import { WikiComponent }            from './wiki/wiki.component';
+import { WikipediaService }            from './wiki/wikipedia.service';
 
 import { DashboardComponent }  from './dashboard.component';
 import { HeroesComponent }     from './heroes.component';
@@ -20,14 +22,16 @@ import { HeroService }         from './hero.service';
       <a [routerLink]="['Heroes']">Heroes</a>
     </nav>
     <router-outlet></router-outlet>
+    <hero-list></hero-list>
     <my-wiki></my-wiki>
   `,
   styleUrls: ['app/app.component.css'],
-  directives: [ROUTER_DIRECTIVES, WikiComponent],
+  directives: [ROUTER_DIRECTIVES, WikiComponent, HeroListComponent],
   providers: [
     HTTP_PROVIDERS,
     ROUTER_PROVIDERS,
-    HeroService
+    HeroService,
+    WikipediaService
   ]
 })
 @RouteConfig([

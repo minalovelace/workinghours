@@ -22,8 +22,7 @@ var HeroesComponent = (function () {
         var _this = this;
         this.heroService
             .getHeroes()
-            .then(function (heroes) { return _this.heroes = heroes; })
-            .catch(function (error) { return _this.error = error; }); // TODO: Display error message
+            .subscribe(function (heroes) { return _this.heroes = heroes; }, function (error) { return _this.errorMessage = error; });
     };
     HeroesComponent.prototype.addHero = function () {
         this.addingHero = true;
@@ -40,13 +39,12 @@ var HeroesComponent = (function () {
         event.stopPropagation();
         this.heroService
             .delete(hero)
-            .then(function (res) {
+            .subscribe(function (res) {
             _this.heroes = _this.heroes.filter(function (h) { return h !== hero; });
             if (_this.selectedHero === hero) {
                 _this.selectedHero = null;
             }
-        })
-            .catch(function (error) { return _this.error = error; }); // TODO: Display error message
+        }, function (error) { return _this.errorMessage = error; });
     };
     HeroesComponent.prototype.ngOnInit = function () {
         this.getHeroes();
