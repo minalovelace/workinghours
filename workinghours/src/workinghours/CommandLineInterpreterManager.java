@@ -1,5 +1,7 @@
 package workinghours;
 
+import restserver.JerseyStarterService;
+
 class CommandLineInterpreterManager
 {
 
@@ -18,7 +20,7 @@ class CommandLineInterpreterManager
                 getKm().generatePDF();
             } else if (args[0].equals("-r"))
             {
-                getKm().startJersey();
+                JerseyStarterService.startJersey();
             } else if (args[0].equals("-man"))
             {
                 getManual();

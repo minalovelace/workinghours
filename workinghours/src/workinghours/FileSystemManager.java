@@ -55,7 +55,6 @@ public class FileSystemManager
     private int m_maxSavedActualCals = 64;
     private int m_maxSavedTotalCals = 256;
     private Integer m_tmpIndex = null;
-    private boolean m_unlockJerseyServer = false;
 
     FileSystemManager()
     {
@@ -70,7 +69,6 @@ public class FileSystemManager
         iniVars.put("maxSavedActualCals", "256");
         iniVars.put("maxSavedTotalCals", "64");
         iniVars.put("pdflatex", PDFLATEX_DEFAULT_MAC);
-        iniVars.put("ujips", "false");
 
         if (iniFile.exists())
         {
@@ -101,7 +99,6 @@ public class FileSystemManager
         setMaxSavedTotalCals(Integer.parseInt(iniVars.get("maxSavedTotalCals")));
         setPDFLATEX(iniVars.get("pdflatex"));
         setCopyPDFPath(iniVars.get("copyPDFPath"));
-        setUnlockJerseyServer(iniVars.get("ujips"));
     }
 
     Kalender createKalender(int jahr)
@@ -1050,17 +1047,6 @@ public class FileSystemManager
     private void setCopyPDFPath(String copyPDFPath)
     {
         m_copyPDFPath = copyPDFPath;
-    }
-
-    boolean isJerseyServerUnlocked()
-    {
-        return m_unlockJerseyServer;
-    }
-
-    private void setUnlockJerseyServer(String string)
-    {
-        if ("true".equalsIgnoreCase(string))
-            m_unlockJerseyServer = true;
     }
 
 }
