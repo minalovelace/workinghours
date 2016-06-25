@@ -29,7 +29,6 @@ var HeroService = (function () {
         var headers = new http_2.Headers({ 'Content-Type': 'application/json' });
         var options = new http_2.RequestOptions({ headers: headers });
         return this.http.post(this.heroesUrl, body, options)
-            .map(this.extractData)
             .catch(this.handleError);
     };
     HeroService.prototype.delete = function (hero) {
@@ -41,9 +40,7 @@ var HeroService = (function () {
             .catch(this.handleError);
     };
     HeroService.prototype.save = function (hero) {
-        return this.http.get(this.heroUrl + hero.name)
-            .map(this.extractData)
-            .catch(this.handleError);
+        return this.addHero(hero.name);
     };
     HeroService.prototype.extractData = function (res) {
         var body = res.json();

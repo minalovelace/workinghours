@@ -55,6 +55,13 @@ public class Heroes
         return m_heroes;
     }
 
+    public Hero addHero(String name)
+    {
+        int newId = Heroes.getSingleton().getHeroes().stream().mapToInt(hero -> hero.getId()).max().getAsInt() + 1;
+        Hero result = new Hero(newId, name);
+        return result;
+    }
+
     @Override
     public String toString()
     {

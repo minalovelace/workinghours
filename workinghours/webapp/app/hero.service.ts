@@ -26,8 +26,7 @@ export class HeroService {
 	    let options = new RequestOptions({ headers: headers });
 
 	    return this.http.post(this.heroesUrl, body, options)
-	                    .map(this.extractData)
-	                    .catch(this.handleError);
+	             .catch(this.handleError);
 	  }
 	  
   delete (hero: Hero): Observable<Hero> {
@@ -41,9 +40,7 @@ export class HeroService {
 	  }
 	  
   save(hero: Hero): Observable<Hero> {
-	    return this.http.get(this.heroUrl + hero.name)
-                        .map(this.extractData)
-                        .catch(this.handleError);
+	    return this.addHero(hero.name);
   }
 
   private extractData(res: Response) {

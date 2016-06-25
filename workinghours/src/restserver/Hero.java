@@ -42,5 +42,5 @@ public class Hero
     {
         return "{\"id\":\"" + m_id + "\",\"name\":\"" + m_name + "\"}";
     }
-    
+
 }
