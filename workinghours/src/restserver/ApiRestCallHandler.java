@@ -44,7 +44,6 @@ public class ApiRestCallHandler
     @Consumes("application/json")
     public void addHero(String json) throws IOException
     {
-        System.out.println(json);
         String name = json.split("\"")[3];
         Heroes.getSingleton().addHero(name);
     }
