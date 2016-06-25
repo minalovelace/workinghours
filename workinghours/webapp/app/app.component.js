@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var router_deprecated_1 = require('@angular/router-deprecated');
+var http_1 = require('@angular/http');
 //Add the RxJS Observable operators we need in this app.
 require('./rxjs-operators');
 var wiki_component_1 = require('./wiki/wiki.component');
@@ -28,8 +29,9 @@ var AppComponent = (function () {
             styleUrls: ['app/app.component.css'],
             directives: [router_deprecated_1.ROUTER_DIRECTIVES, wiki_component_1.WikiComponent],
             providers: [
+                http_1.HTTP_PROVIDERS,
                 router_deprecated_1.ROUTER_PROVIDERS,
-                hero_service_1.HeroService,
+                hero_service_1.HeroService
             ]
         }),
         router_deprecated_1.RouteConfig([

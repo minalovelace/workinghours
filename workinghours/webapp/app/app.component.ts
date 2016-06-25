@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS } from '@angular/router-deprecated';
+import { HTTP_PROVIDERS } from '@angular/http';
 
 //Add the RxJS Observable operators we need in this app.
 import './rxjs-operators';
@@ -24,8 +25,9 @@ import { HeroService }         from './hero.service';
   styleUrls: ['app/app.component.css'],
   directives: [ROUTER_DIRECTIVES, WikiComponent],
   providers: [
+    HTTP_PROVIDERS,
     ROUTER_PROVIDERS,
-    HeroService,
+    HeroService
   ]
 })
 @RouteConfig([
