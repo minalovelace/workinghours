@@ -9,8 +9,8 @@ public class Kalender
     /*
      * This class serves as a handler for the calendar.
      */
-    private ConcurrentHashMap<Integer, Tag> m_tage;
-    private int m_year;
+    private ConcurrentHashMap<Integer, Tag> tage;
+    private int year;
 
     /*
      * Call this method, if a new calendar has to be created and the only
@@ -18,8 +18,8 @@ public class Kalender
      */
     Kalender(int jahr)
     {
-        m_tage = createKalender(jahr);
-        m_year = jahr;
+        tage = createKalender(jahr);
+        year = jahr;
         isConsistent();
     }
 
@@ -31,19 +31,19 @@ public class Kalender
      */
     private boolean isConsistent()
     {
-        if (m_tage.isEmpty())
+        if (tage.isEmpty())
         {
             return true;
         } else
         {
-            m_year = m_tage.entrySet().iterator().next().getValue().getDatum().getYear();
+            year = tage.entrySet().iterator().next().getValue().getDatum().getYear();
         }
-        for (Tag value : m_tage.values())
+        for (Tag value : tage.values())
         {
-            if (m_year != value.getDatum().getYear())
+            if (year != value.getDatum().getYear())
             {
                 System.out.println("The given day " + value.getDatum().datumToString()
-                        + " is not part of the actual year of this calendar. We are in the year " + m_year);
+                        + " is not part of the actual year of this calendar. We are in the year " + year);
                 System.out.println("The calendar is inconsistent.");
                 System.out.println("Try -cc to fix this.");
                 return false;
@@ -58,15 +58,15 @@ public class Kalender
      */
     void repairConsistency()
     {
-        m_tage.putAll(new FeiertagWeekend(m_year).getWeekendsHolidays());
+        tage.putAll(new FeiertagWeekend(year).getWeekendsHolidays());
 
         if (!isConsistent())
         {
-            for (Tag value : m_tage.values())
+            for (Tag value : tage.values())
             {
-                if (m_year != value.getDatum().getYear())
+                if (year != value.getDatum().getYear())
                 {
-                    Tag removedEntry = m_tage.remove(value.getDatum().getDayOfYear());
+                    Tag removedEntry = tage.remove(value.getDatum().getDayOfYear());
                     System.out.println("The following entry has been removed from the calendar: "
                             + removedEntry.getDatum().datumToString());
                 }
@@ -83,10 +83,10 @@ public class Kalender
 
     void putTag(Tag tag)
     {
-        if (isConsistent() && (m_year == tag.getDatum().getYear()))
+        if (isConsistent() && (year == tag.getDatum().getYear()))
         {
             int tagKey = tag.getDatum().getDayOfYear();
-            m_tage.put(tagKey, tag);
+            tage.put(tagKey, tag);
         } else
         {
             System.out.println(
@@ -97,13 +97,13 @@ public class Kalender
     Tag getTag(Datum dayOfInterest)
     {
         int dayOfYear = dayOfInterest.getDayOfYear();
-        if (m_tage.containsKey(dayOfYear))
+        if (tage.containsKey(dayOfYear))
         {
-            return m_tage.get(dayOfYear);
+            return tage.get(dayOfYear);
         } else
         {
             GregorianCalendar calResult = new GregorianCalendar();
-            calResult.set(GregorianCalendar.YEAR, m_year);
+            calResult.set(GregorianCalendar.YEAR, year);
             calResult.set(GregorianCalendar.DAY_OF_YEAR, dayOfYear);
             return new Tag(new Datum(calResult));
         }
@@ -119,12 +119,12 @@ public class Kalender
     Tag removeTag(Datum dayOfInterest)
     {
         int dayOfYear = dayOfInterest.getDayOfYear();
-        return m_tage.remove(dayOfYear);
+        return tage.remove(dayOfYear);
     }
 
     int getYear()
     {
-        return m_year;
+        return year;
     }
 
     int getSigmaDelta(Tag tag)
@@ -149,7 +149,7 @@ public class Kalender
     ConcurrentHashMap<Integer, Tag> getMonth(int i)
     {
         ConcurrentHashMap<Integer, Tag> result = new ConcurrentHashMap<>();
-        for (Tag tag : m_tage.values())
+        for (Tag tag : tage.values())
         {
             if (tag.getDatum().getMonth() == i)
                 result.put(tag.getDatum().getDayOfYear(), tag);

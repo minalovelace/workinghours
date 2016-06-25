@@ -11,15 +11,15 @@ class Datum
      * A Datum consists of three numbers. Those are the year, the month and the
      * day.
      */
-    private int m_year;
-    private int m_month;
-    private int m_day;
+    private int year;
+    private int month;
+    private int day;
 
     Datum(String datum)
     {
-        m_year = stringToDatum(datum).getYear();
-        m_month = stringToDatum(datum).getMonth();
-        m_day = stringToDatum(datum).getDay();
+        this.year = stringToDatum(datum).getYear();
+        this.month = stringToDatum(datum).getMonth();
+        this.day = stringToDatum(datum).getDay();
     }
 
     Datum(GregorianCalendar cal)
@@ -29,9 +29,9 @@ class Datum
 
     Datum(int year, int month, int day)
     {
-        m_year = year;
-        m_month = month;
-        m_day = day;
+        this.year = year;
+        this.month = month;
+        this.day = day;
         if (!isDatum())
         {
             System.out.println(
@@ -41,9 +41,9 @@ class Datum
 
     private void setDatum(GregorianCalendar cal)
     {
-        m_year = cal.get(GregorianCalendar.YEAR);
-        m_month = cal.get(GregorianCalendar.MONTH) + 1;
-        m_day = cal.get(GregorianCalendar.DAY_OF_MONTH);
+        this.year = cal.get(GregorianCalendar.YEAR);
+        this.month = cal.get(GregorianCalendar.MONTH) + 1;
+        this.day = cal.get(GregorianCalendar.DAY_OF_MONTH);
         if (!isDatum())
         {
             System.out.println(
@@ -53,17 +53,17 @@ class Datum
 
     int getYear()
     {
-        return m_year;
+        return this.year;
     }
 
     int getMonth()
     {
-        return m_month;
+        return this.month;
     }
 
     int getDay()
     {
-        return m_day;
+        return this.day;
     }
 
     Datum stringToDatum(String datumAsString)
@@ -107,7 +107,7 @@ class Datum
      */
     String datumToString()
     {
-        return m_year + "-" + m_month + "-" + m_day;
+        return this.year + "-" + this.month + "-" + this.day;
     }
 
     /*
@@ -133,22 +133,22 @@ class Datum
         thirtyOneDays.add(10);
         thirtyOneDays.add(12);
 
-        if ((m_year > 1900) && (m_year < 2301))
+        if ((this.year > 1900) && (this.year < 2301))
         {
-            if ((m_month > 0) && (m_month < 13))
+            if ((this.month > 0) && (this.month < 13))
             {
-                if ((m_day > 0) && (m_day < 32))
+                if ((this.day > 0) && (this.day < 32))
                 {
-                    if (thirtyOneDays.contains(new Integer(m_month)))
+                    if (thirtyOneDays.contains(new Integer(this.month)))
                     {
                         result = true;
-                    } else if ((thirtyDays.contains(new Integer(m_month))) && (m_day < 31))
+                    } else if ((thirtyDays.contains(new Integer(this.month))) && (this.day < 31))
                     {
                         result = true;
-                    } else if ((m_month == 2) && (m_day < 30) && isSchaltjahr())
+                    } else if ((this.month == 2) && (this.day < 30) && isSchaltjahr())
                     {
                         result = true;
-                    } else if ((m_month == 2) && (m_day < 29) && !isSchaltjahr())
+                    } else if ((this.month == 2) && (this.day < 29) && !isSchaltjahr())
                     {
                         result = true;
                     }
@@ -163,13 +163,13 @@ class Datum
     {
         boolean result = false;
 
-        if (m_year % 400 == 0)
+        if (this.year % 400 == 0)
         {
             result = true;
-        } else if (m_year % 100 == 0)
+        } else if (this.year % 100 == 0)
         {
             result = false;
-        } else if (m_year % 4 == 0)
+        } else if (this.year % 4 == 0)
         {
             result = true;
         }
@@ -183,7 +183,7 @@ class Datum
      */
     int getWeekOfYear()
     {
-        GregorianCalendar datumAsCalendar = new GregorianCalendar(m_year, m_month - 1, m_day);
+        GregorianCalendar datumAsCalendar = new GregorianCalendar(this.year, this.month - 1, this.day);
         return datumAsCalendar.get(GregorianCalendar.WEEK_OF_YEAR);
     }
 
@@ -193,7 +193,7 @@ class Datum
      */
     private String getDayOfWeekAsString()
     {
-        GregorianCalendar datumAsCalendar = new GregorianCalendar(m_year, m_month - 1, m_day);
+        GregorianCalendar datumAsCalendar = new GregorianCalendar(this.year, this.month - 1, this.day);
 
         switch (datumAsCalendar.get(GregorianCalendar.DAY_OF_WEEK))
         {
@@ -232,7 +232,7 @@ class Datum
      */
     int getDayOfWeekAsInt()
     {
-        GregorianCalendar datumAsCalendar = new GregorianCalendar(m_year, m_month - 1, m_day);
+        GregorianCalendar datumAsCalendar = new GregorianCalendar(this.year, this.month - 1, this.day);
 
         switch (datumAsCalendar.get(GregorianCalendar.DAY_OF_WEEK))
         {
@@ -257,7 +257,7 @@ class Datum
 
     void addToDayOfYear(int i)
     {
-        GregorianCalendar cal = new GregorianCalendar(m_year, m_month - 1, m_day);
+        GregorianCalendar cal = new GregorianCalendar(this.year, this.month - 1, this.day);
         cal.add(GregorianCalendar.DAY_OF_YEAR, i);
         setDatum(cal);
     }
@@ -267,7 +267,7 @@ class Datum
      */
     int getDayOfYear()
     {
-        GregorianCalendar datumAsCalendar = new GregorianCalendar(m_year, m_month - 1, m_day);
+        GregorianCalendar datumAsCalendar = new GregorianCalendar(this.year, this.month - 1, this.day);
         return datumAsCalendar.get(GregorianCalendar.DAY_OF_YEAR);
     }
 

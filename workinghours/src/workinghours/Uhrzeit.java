@@ -8,34 +8,34 @@ class Uhrzeit
      * minutes. Total minutes is the time in minutes from midnight to the given
      * time of the day.
      */
-    private final int m_hours;
-    private final int m_minutes;
+    private final int hours;
+    private final int minutes;
 
     Uhrzeit(int hours, int minutes)
     {
-        m_hours = hours;
-        m_minutes = minutes;
+        this.hours = hours;
+        this.minutes = minutes;
     }
 
     Uhrzeit(String uhrzeit)
     {
-        m_hours = stringToUhrzeit(uhrzeit).getHours();
-        m_minutes = stringToUhrzeit(uhrzeit).getMinutes();
+        this.hours = stringToUhrzeit(uhrzeit).getHours();
+        this.minutes = stringToUhrzeit(uhrzeit).getMinutes();
     }
 
     private int getHours()
     {
-        return m_hours;
+        return this.hours;
     }
 
     private int getMinutes()
     {
-        return m_minutes;
+        return this.minutes;
     }
 
     int getTotalMinutes()
     {
-        int totalMinutes = m_hours * 60 + m_minutes;
+        int totalMinutes = this.hours * 60 + this.minutes;
         return totalMinutes;
     }
 
@@ -68,9 +68,9 @@ class Uhrzeit
     public String toString()
     {
         if (10 > getMinutes())
-            return Integer.toString(m_hours) + ":0" + Integer.toString(m_minutes) + " Uhr";
+            return Integer.toString(this.hours) + ":0" + Integer.toString(this.minutes) + " Uhr";
         else
-            return Integer.toString(m_hours) + ":" + Integer.toString(m_minutes) + " Uhr";
+            return Integer.toString(this.hours) + ":" + Integer.toString(this.minutes) + " Uhr";
     }
 
 }
