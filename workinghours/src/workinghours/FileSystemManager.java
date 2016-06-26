@@ -922,7 +922,7 @@ public class FileSystemManager
                 @Override
                 public boolean accept(File dir, String name)
                 {
-                    return (dir.equals(whCalDataDir)) && name.matches(REGEX_FOR_FILENAME);
+                    return dir.equals(whCalDataDir) && name.matches(REGEX_FOR_FILENAME);
                 }
             };
             LinkedList<String> listFilesInCalDataDir = new LinkedList<>(Arrays.stream(whCalDataDir.listFiles(filter))
