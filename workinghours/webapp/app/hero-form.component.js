@@ -16,6 +16,11 @@ var HeroFormComponent = (function () {
             'Super Hot', 'Weather Changer'];
         this.model = new hero_1.Hero(18, 'Dr IQ', this.powers[0], 'Chuck Overstreet');
         this.submitted = false;
+        // Reset the form with a new hero AND restore 'pristine' class state
+        // by toggling 'active' flag which causes the form
+        // to be removed/re-added in a tick via NgIf
+        // TODO: Workaround until NgForm has a reset method (#6822)
+        this.active = true;
     }
     HeroFormComponent.prototype.onSubmit = function () { this.submitted = true; };
     Object.defineProperty(HeroFormComponent.prototype, "diagnostic", {
@@ -24,6 +29,19 @@ var HeroFormComponent = (function () {
         enumerable: true,
         configurable: true
     });
+    HeroFormComponent.prototype.newHero = function () {
+        var _this = this;
+        this.model = new hero_1.Hero(42, '', '');
+        this.active = false;
+        setTimeout(function () { return _this.active = true; }, 0);
+    };
+    //////// NOT SHOWN IN DOCS ////////
+    // Reveal in html:
+    //   Name via form.controls = {{showFormControls(heroForm)}}
+    HeroFormComponent.prototype.showFormControls = function (form) {
+        return form && form.controls['name'] &&
+            form.controls['name'].value; // Dr. IQ
+    };
     HeroFormComponent = __decorate([
         core_1.Component({
             selector: 'hero-form',
@@ -34,4 +52,9 @@ var HeroFormComponent = (function () {
     return HeroFormComponent;
 }());
 exports.HeroFormComponent = HeroFormComponent;
+/*
+Copyright 2016 Google Inc. All Rights Reserved.
+Use of this source code is governed by an MIT-style license that
+can be found in the LICENSE file at http://angular.io/license
+*/ 
 //# sourceMappingURL=hero-form.component.js.map
