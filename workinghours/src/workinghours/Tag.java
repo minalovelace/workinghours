@@ -1,27 +1,43 @@
 package workinghours;
 
+import com.google.gson.annotations.SerializedName;
+
 class Tag implements Comparable<Tag>
 {
 
     private final int WORKING_DAY_MINUTES = 480;
-    private Datum datum;
-    private Uhrzeit begin = new Uhrzeit(0, 0);
-    private Uhrzeit end = new Uhrzeit(0, 0);
-    private int pause = 0;
-    private String kommentar = "";
-    private boolean workingDay = false;
-    private boolean illness = false;
-    private boolean hourReduction = false;
-    private boolean holiday = false;
-    private boolean vacation = false;
-    private boolean weekend = false;
-    private boolean businessTrip = false;
-    private boolean staffTraining = false;
-    private boolean kommentarSet = false;
+    @SerializedName("datum")
+    private Datum m_datum;
+    @SerializedName("begin")
+    private Uhrzeit m_begin = new Uhrzeit(0, 0);
+    @SerializedName("end")
+    private Uhrzeit m_end = new Uhrzeit(0, 0);
+    @SerializedName("pause")
+    private int m_pause = 0;
+    @SerializedName("kommentar")
+    private String m_kommentar = "";
+    @SerializedName("workingDay")
+    private boolean m_workingDay = false;
+    @SerializedName("illness")
+    private boolean m_illness = false;
+    @SerializedName("hourReduction")
+    private boolean m_hourReduction = false;
+    @SerializedName("holiday")
+    private boolean m_holiday = false;
+    @SerializedName("vacation")
+    private boolean m_vacation = false;
+    @SerializedName("weekend")
+    private boolean m_weekend = false;
+    @SerializedName("businessTrip")
+    private boolean m_businessTrip = false;
+    @SerializedName("staffTraining")
+    private boolean m_staffTraining = false;
+    @SerializedName("kommentarSet")
+    private boolean m_kommentarSet = false;
 
     Tag(Datum day)
     {
-        datum = day;
+        m_datum = day;
     }
 
     /**
@@ -31,12 +47,12 @@ class Tag implements Comparable<Tag>
      */
     Tag(Datum day, boolean illness, boolean hourReduction, boolean holiday, boolean vacation, boolean weekend)
     {
-        datum = day;
-        this.illness = illness;
-        this.hourReduction = hourReduction;
-        this.holiday = holiday;
-        this.vacation = vacation;
-        this.weekend = weekend;
+        m_datum = day;
+        m_illness = illness;
+        m_hourReduction = hourReduction;
+        m_holiday = holiday;
+        m_vacation = vacation;
+        m_weekend = weekend;
 
     }
 
@@ -52,157 +68,157 @@ class Tag implements Comparable<Tag>
     Tag(Datum day, Uhrzeit begin, Uhrzeit end, int pause, boolean workingDay, boolean businessTrip,
             boolean staffTraining)
     {
-        this.datum = day;
-        this.begin = begin;
-        this.end = end;
-        this.pause = pause;
-        this.workingDay = workingDay;
-        this.businessTrip = businessTrip;
-        this.staffTraining = staffTraining;
+        m_datum = day;
+        m_begin = begin;
+        m_end = end;
+        m_pause = pause;
+        m_workingDay = workingDay;
+        m_businessTrip = businessTrip;
+        m_staffTraining = staffTraining;
     }
 
     Datum getDatum()
     {
-        return this.datum;
+        return m_datum;
     }
 
     void setDatum(Datum day)
     {
-        this.datum = day;
+        m_datum = day;
     }
 
     Uhrzeit getBegin()
     {
-        return this.begin;
+        return m_begin;
     }
 
     void setBegin(Uhrzeit begin)
     {
-        this.begin = begin;
+        m_begin = begin;
     }
 
     Uhrzeit getEnd()
     {
-        return this.end;
+        return m_end;
     }
 
     void setEnd(Uhrzeit end)
     {
-        this.end = end;
+        this.m_end = end;
     }
 
     int getPause()
     {
-        return this.pause;
+        return m_pause;
     }
 
     void setPause(int pause)
     {
-        this.pause = pause;
+        m_pause = pause;
     }
 
     String getKommentar()
     {
-        return this.kommentar;
+        return m_kommentar;
     }
 
     void setKommentar(String kommentar)
     {
         if (!kommentar.isEmpty() && kommentar != null)
         {
-            this.kommentar = kommentar;
-            this.kommentarSet = true;
+            m_kommentar = kommentar;
+            m_kommentarSet = true;
         } else
         {
-            this.kommentarSet = false;
+            m_kommentarSet = false;
         }
     }
 
     boolean isKommentarSet()
     {
-        return this.kommentarSet;
+        return m_kommentarSet;
     }
 
     boolean isWorkingDay()
     {
-        return this.workingDay;
+        return m_workingDay;
     }
 
     void setWorkingDay(boolean workingDay)
     {
-        this.workingDay = workingDay;
+        m_workingDay = workingDay;
     }
 
     boolean isIllness()
     {
-        return this.illness;
+        return m_illness;
     }
 
     void setIllness(boolean illness)
     {
-        this.illness = illness;
+        m_illness = illness;
     }
 
     boolean isHourReduction()
     {
-        return this.hourReduction;
+        return m_hourReduction;
     }
 
     void setHourReduction(boolean hourReduction)
     {
-        this.hourReduction = hourReduction;
+        m_hourReduction = hourReduction;
     }
 
     boolean isHoliday()
     {
-        return this.holiday;
+        return m_holiday;
     }
 
     void setHoliday(boolean holiday)
     {
-        this.holiday = holiday;
+        m_holiday = holiday;
     }
 
     boolean isVacation()
     {
-        return this.vacation;
+        return m_vacation;
     }
 
     void setVacation(boolean vacation)
     {
-        this.vacation = vacation;
+        m_vacation = vacation;
     }
 
     boolean isBusinessTrip()
     {
-        return this.businessTrip;
+        return m_businessTrip;
     }
 
     void setBusinessTrip(boolean businessTrip)
     {
-        this.businessTrip = businessTrip;
+        m_businessTrip = businessTrip;
     }
 
     boolean isStaffTraining()
     {
-        return this.staffTraining;
+        return m_staffTraining;
     }
 
     void setStaffTraining(boolean staffTraining)
     {
-        this.staffTraining = staffTraining;
+        m_staffTraining = staffTraining;
     }
 
     boolean isWeekend()
     {
-        return this.weekend;
+        return m_weekend;
     }
 
     @Override
     public int compareTo(Tag tag)
     {
         int otherTagAsCalendar = tag.getDatum().getDayOfYear();
-        int tagAsCalendar = this.getDatum().getDayOfYear();
+        int tagAsCalendar = getDatum().getDayOfYear();
         return tagAsCalendar - otherTagAsCalendar;
     }
 

@@ -1,41 +1,44 @@
 package workinghours;
 
+import com.google.gson.annotations.SerializedName;
+
+/*
+ * The time of the day. It will be saved as hours, minutes and total
+ * minutes. Total minutes is the time in minutes from midnight to the given
+ * time of the day.
+ */
 class Uhrzeit
 {
-
-    /*
-     * The time of the day. It will be saved as hours, minutes and total
-     * minutes. Total minutes is the time in minutes from midnight to the given
-     * time of the day.
-     */
-    private final int hours;
-    private final int minutes;
+    @SerializedName("hours")
+    private final int m_hours;
+    @SerializedName("minutes")
+    private final int m_minutes;
 
     Uhrzeit(int hours, int minutes)
     {
-        this.hours = hours;
-        this.minutes = minutes;
+        m_hours = hours;
+        m_minutes = minutes;
     }
 
     Uhrzeit(String uhrzeit)
     {
-        this.hours = stringToUhrzeit(uhrzeit).getHours();
-        this.minutes = stringToUhrzeit(uhrzeit).getMinutes();
+        m_hours = stringToUhrzeit(uhrzeit).getHours();
+        m_minutes = stringToUhrzeit(uhrzeit).getMinutes();
     }
 
     private int getHours()
     {
-        return this.hours;
+        return m_hours;
     }
 
     private int getMinutes()
     {
-        return this.minutes;
+        return m_minutes;
     }
 
     int getTotalMinutes()
     {
-        int totalMinutes = this.hours * 60 + this.minutes;
+        int totalMinutes = m_hours * 60 + m_minutes;
         return totalMinutes;
     }
 
@@ -68,9 +71,9 @@ class Uhrzeit
     public String toString()
     {
         if (10 > getMinutes())
-            return Integer.toString(this.hours) + ":0" + Integer.toString(this.minutes) + " Uhr";
+            return Integer.toString(m_hours) + ":0" + Integer.toString(m_minutes) + " Uhr";
         else
-            return Integer.toString(this.hours) + ":" + Integer.toString(this.minutes) + " Uhr";
+            return Integer.toString(m_hours) + ":" + Integer.toString(m_minutes) + " Uhr";
     }
 
 }
