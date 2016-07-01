@@ -27,6 +27,12 @@ class CommandLineInterpreterManager
             } else if (args[0].equals("-cc"))
             {
                 getKm().repairConsistency();
+            } else if (args[0].equals("-ti"))
+            {
+                getKm().setClockIn();
+            } else if (args[0].equals("-to"))
+            {
+                getKm().setClockOut();
             } else
             {
                 getErrorMessage();
@@ -86,7 +92,7 @@ class CommandLineInterpreterManager
         System.out.println("");
         System.out.println("Synopsis:");
         System.out.println(
-                "   Workinghours [-bcdfhiknprs] [-b String] [-h String] [-hr String] [-i String] [-k String String] [-n String String String String] [-pdf] [-s String] [-v String]");
+                "   Workinghours [-bcdfhiknoprst] [-b String] [-h String] [-hr String] [-i String] [-k String String] [-n String String String String] [-pdf] [-r] [-ti] [-to] [-s String] [-v String]");
         System.out.println("");
         System.out.println("Description:");
         System.out.println("");
@@ -134,6 +140,12 @@ class CommandLineInterpreterManager
         System.out.println("");
         System.out.println("-s");
         System.out.println("     Followed by the date of a day, which is a staff training day.");
+        System.out.println("");
+        System.out.println("-ti");
+        System.out.println("     Use this command to clock in.");
+        System.out.println("");
+        System.out.println("-to");
+        System.out.println("     Use this command to clock out.");
         System.out.println("");
         System.out.println("-v");
         System.out.println("     Followed by the date of a vacation.");

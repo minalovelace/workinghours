@@ -141,4 +141,31 @@ public class KalenderManager
         return m_fsm;
     }
 
+    public Kalender setClockIn()
+    {
+        LocalDateTime now = LocalDateTime.now();
+        Datum datum = new Datum(now.getYear(), now.getMonthValue(), now.getDayOfMonth());
+        Uhrzeit beginn = new Uhrzeit(now.getHour(), now.getMinute());
+        Uhrzeit ende = new Uhrzeit(now.getHour(), now.getMinute());
+        Integer pause = getFsm().getStandardTimeForPause();
+        Tag tag = new Tag(datum, beginn, ende, pause, true, false, false);
+        Kalender kal = getFsm().loadNewestKalender();
+        kal.putTag(tag);
+        getFsm().saveKalender(kal);
+        return kal;
+    }
+
+    public Kalender setClockOut()
+    {
+        LocalDateTime now = LocalDateTime.now();
+        Datum datum = new Datum(now.getYear(), now.getMonthValue(), now.getDayOfMonth());
+        Kalender kal = getFsm().loadNewestKalender();
+        Tag tag = kal.getTag(datum);
+        tag.setEnd(new Uhrzeit(now.getHour(), now.getMinute()));
+        tag.setPause(getFsm().getStandardTimeForPause());
+        kal.putTag(tag);
+        getFsm().saveKalender(kal);
+        return kal;
+    }
+
 }

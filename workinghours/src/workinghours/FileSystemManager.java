@@ -54,6 +54,7 @@ public class FileSystemManager
     private String m_copyPDFPath;
     private int m_maxSavedActualCals = 64;
     private int m_maxSavedTotalCals = 256;
+    private int m_standardTimeForPause = 45;
     private Integer m_tmpIndex = null;
 
     FileSystemManager()
@@ -68,6 +69,7 @@ public class FileSystemManager
         iniVars.put("copyPDFPath", null);
         iniVars.put("maxSavedActualCals", "256");
         iniVars.put("maxSavedTotalCals", "64");
+        iniVars.put("standardTimeForPause", "45");
         iniVars.put("pdflatex", PDFLATEX_DEFAULT_MAC);
 
         if (iniFile.exists())
@@ -99,6 +101,7 @@ public class FileSystemManager
         setMaxSavedTotalCals(Integer.parseInt(iniVars.get("maxSavedTotalCals")));
         setPDFLATEX(iniVars.get("pdflatex"));
         setCopyPDFPath(iniVars.get("copyPDFPath"));
+        setStandardTimeForPause(Integer.parseInt(iniVars.get("standardTimeForPause")));
     }
 
     Kalender createKalender(int jahr)
@@ -1041,6 +1044,16 @@ public class FileSystemManager
     private void setCopyPDFPath(String copyPDFPath)
     {
         m_copyPDFPath = copyPDFPath;
+    }
+
+    private void setStandardTimeForPause(int standardTimeForPause)
+    {
+        m_standardTimeForPause = standardTimeForPause;
+    }
+
+    public int getStandardTimeForPause()
+    {
+        return m_standardTimeForPause;
     }
 
 }
