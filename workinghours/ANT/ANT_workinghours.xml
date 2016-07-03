@@ -4,7 +4,7 @@
     <!--ANT 1.7 is required                                        -->
     <!--define folder properties-->
     <property name="dir.buildfile" value="."/>
-    <property name="dir.workspace" value="/Users/Nina/projects/workinghours/workinghours"/>
+    <property name="dir.workspace" value="/Users/Nina/workspaces/workinghours"/>
     <property name="dir.jarfile" value="/Users/Nina/Desktop"/>
     <property name="dir.webapp" value="${dir.buildfile}/../webapp"/>
     <copy todir="${dir.jarfile}/webapp/">
@@ -16,7 +16,7 @@
                 <attribute name="Main-Class" value="workinghours.Main"/>
                 <attribute name="Class-Path" value="."/>
             </manifest>
-            <fileset dir="/Users/Nina/git/workinghours/workinghours/target/classes"/>
+            <fileset dir="/Users/Nina/repos/workinghours/workinghours/target/classes"/>
             <zipfileset excludes="META-INF/*.SF" src="/Users/Nina/.m2/repository/com/google/code/gson/gson/2.7/gson-2.7.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="/Users/Nina/.m2/repository/org/glassfish/jersey/containers/jersey-container-grizzly2-http/2.23.1/jersey-container-grizzly2-http-2.23.1.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="/Users/Nina/.m2/repository/org/glassfish/hk2/external/javax.inject/2.4.0-b34/javax.inject-2.4.0-b34.jar"/>
