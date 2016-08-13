@@ -168,4 +168,8 @@ public class KalenderManager
         return kal;
     }
 
+    public void produceArchive()
+    {
+        getFsm().produceArchive();
+    }
 }

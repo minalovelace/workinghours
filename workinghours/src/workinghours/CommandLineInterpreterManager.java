@@ -18,6 +18,9 @@ class CommandLineInterpreterManager
             if (args[0].equals("-pdf"))
             {
                 getKm().generatePDF();
+            } else if (args[0].equals("-ar"))
+            {
+                getKm().produceArchive();
             } else if (args[0].equals("-r"))
             {
                 JerseyStarterService.startJersey();
@@ -38,6 +41,7 @@ class CommandLineInterpreterManager
                 getErrorMessage();
             }
         } else if (args.length == 2)
+
         {
             if (args[0].equals("-b"))
             {
@@ -100,6 +104,9 @@ class CommandLineInterpreterManager
                 "The Workinghours utility generates a calendar, saves changes to it and produces a pdf-file with all the information needed for the employee to protocol the amount of worked hours, holidays and other usefull stuff.");
         System.out.println("");
         System.out.println("      The following options are available:");
+        System.out.println("");
+        System.out.println("-ar");
+        System.out.println("     Produces a zip-archive of the newest calendar.");
         System.out.println("");
         System.out.println("-b");
         System.out.println("     Followed by the date of a day, which is a day of a businesstrip.");

@@ -2,10 +2,12 @@ package workinghours;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FilenameFilter;
@@ -25,6 +27,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import com.google.gson.Gson;
 
@@ -921,7 +925,6 @@ public class FileSystemManager
         {
             FilenameFilter filter = new FilenameFilter()
             {
-
                 @Override
                 public boolean accept(File dir, String name)
                 {
@@ -1056,4 +1059,44 @@ public class FileSystemManager
         return m_standardTimeForPause;
     }
 
+    public void produceArchive()
+    {
+        String newestCalendarName = getAllSavedCals().getLast();
+        String archiveName = newestCalendarName.split("[T]")[0] + ".zip";
+        File newestCalendar = new File(PFAD.toAbsolutePath().toString(), newestCalendarName);
+        File zipArchive = new File(Paths.get(getCopyPDFPath()).toAbsolutePath().toString(), archiveName);
+        ZipOutputStream os = null;
+        BufferedInputStream is = null;
+        try
+        {
+            is = new BufferedInputStream(new FileInputStream(newestCalendar));
+            os = new ZipOutputStream(new FileOutputStream(zipArchive), StandardCharsets.UTF_8);
+            ZipEntry entry = new ZipEntry(newestCalendarName);
+            os.putNextEntry(entry);
+
+            byte[] buffer = new byte[8192];
+            for (int i; (i = is.read(buffer)) != -1;)
+                os.write(buffer, 0, i);
+
+            os.closeEntry();
+        } catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+        } finally
+        {
+            try
+            {
+                if (is != null)
+                    is.close();
+                if (os != null)
+                    os.close();
+            } catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+        }
+    }
 }
