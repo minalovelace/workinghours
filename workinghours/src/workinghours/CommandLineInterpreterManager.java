@@ -109,7 +109,7 @@ class CommandLineInterpreterManager
         System.out.println("     Produces a zip-archive of the newest calendar.");
         System.out.println("");
         System.out.println("-b");
-        System.out.println("     Followed by the date of a day, which is a day of a businesstrip.");
+        System.out.println("     Followed by the date of a day, where a businesstrip took place.");
         System.out.println("");
         System.out.println("-c");
         System.out.println("     Followed by the year of a new calendar, which will be created.");
