@@ -125,6 +125,14 @@ public class KalenderManager
         return kal;
     }
 
+    public Kalender setSigmaDeltaLastYear(String sigmaDeltaLastYear)
+    {
+        Kalender kal = getFsm().loadNewestKalender();
+        kal.setSigmaDeltaLastYear(Integer.parseInt(sigmaDeltaLastYear));
+        getFsm().saveKalender(kal);
+        return kal;
+    }
+
     public Kalender loadNewestKalender()
     {
         try

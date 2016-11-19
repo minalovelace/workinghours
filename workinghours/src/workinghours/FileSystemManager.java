@@ -672,6 +672,10 @@ public class FileSystemManager
             else
                 sigmaDeltaStundenMinutenString += " " + Integer.toString(simgaDeltaMinuten) + " Minute";
         }
+        if (sigmaDelta <= 0)
+        {
+            sigmaDeltaStundenMinutenString = "keine";
+        }
 
         bw.newLine();
         bw.write("\\newpage");

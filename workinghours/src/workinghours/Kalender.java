@@ -14,6 +14,8 @@ public class Kalender
     private ConcurrentHashMap<Integer, Tag> m_tage;
     @SerializedName("year")
     private int m_year;
+    @SerializedName("sigmaDeltaLastYear")
+    private int m_sigmaDeltaLastYear = 0;
 
     /*
      * Call this method, if a new calendar has to be created and the only
@@ -140,7 +142,12 @@ public class Kalender
             dayOfInterest.addToDayOfYear(1);
             sigmaDelta = sigmaDelta + getTag(dayOfInterest).getDelta();
         }
-        return sigmaDelta;
+        return sigmaDelta + m_sigmaDeltaLastYear;
+    }
+
+    void setSigmaDeltaLastYear(int sigmaDeltaLastYear)
+    {
+        m_sigmaDeltaLastYear = sigmaDeltaLastYear;
     }
 
     /**

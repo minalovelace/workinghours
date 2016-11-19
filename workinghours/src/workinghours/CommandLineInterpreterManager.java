@@ -4,7 +4,6 @@ import restserver.JerseyStarterService;
 
 class CommandLineInterpreterManager
 {
-
     private KalenderManager m_km = new KalenderManager();
 
     CommandLineInterpreterManager()
@@ -41,7 +40,6 @@ class CommandLineInterpreterManager
                 getErrorMessage();
             }
         } else if (args.length == 2)
-
         {
             if (args[0].equals("-b"))
             {
@@ -67,6 +65,9 @@ class CommandLineInterpreterManager
             } else if (args[0].equals("-s"))
             {
                 getKm().setStaffTraining(args[1]);
+            } else if (args[0].equals("-co"))
+            {
+                getKm().setSigmaDeltaLastYear(args[1]);
             } else if (args[0].equals("-v"))
             {
                 getKm().setVacation(args[1]);
@@ -116,6 +117,9 @@ class CommandLineInterpreterManager
         System.out.println("");
         System.out.println("-cc");
         System.out.println("     Try to repair the consistency of the newest calendar.");
+        System.out.println("");
+        System.out.println("-co");
+        System.out.println("     Followed by the minutes of carryover of overtime from last year.");
         System.out.println("");
         System.out.println("-d");
         System.out.println("     Followed by the date of a day to be deleted.");
