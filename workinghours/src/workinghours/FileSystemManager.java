@@ -40,15 +40,8 @@ public class FileSystemManager
     private static final String WH_CAL_DATA_ENDING = ".txt";
     private static final String REGEX_FOR_FILENAME = "^\\d\\d\\d\\d[-]\\d\\d[-]\\d\\d[T]\\d\\d[_]\\d\\d[_]\\d\\d[.][t][x][t]$";
     private static final Path PFAD = Paths.get(WH_CAL_DATA_FOLDER);
-    private static final String COLOR_WOCHENENDE = "\\cellcolor{blue!15}";
     private static final String COLOR_RAND = "\\cellcolor{gray!40}";
     private static final String COLOR_ECKE = "\\cellcolor{gray!60}";
-    private static final String COLOR_FEIERTAG = "\\cellcolor{blue!30}";
-    private static final String COLOR_DIENSTREISE = "\\cellcolor{pink}";
-    private static final String COLOR_URLAUB = "\\cellcolor{green!40!gray}";
-    private static final String COLOR_FORTBILDUNG = "\\cellcolor{pink!80!gray}";
-    private static final String COLOR_KRANKHEITSTAG = "\\cellcolor{red!65}";
-    private static final String COLOR_STUNDENREDUZIERUNG = "\\cellcolor{orange!80}";
     private static final String COLOR_SONSTIGER_KOMMENTAR = "\\cellcolor{pink!60!gray}";
     private static final String PDFLATEX_DEFAULT_MAC = "/Library/TeX/texbin/pdflatex";
     // private static final String PDFLATEX_DEFAULT_WIN = "C:/Program
@@ -499,17 +492,18 @@ public class FileSystemManager
         bw.newLine();
         bw.write("\\center\\begin{tabular}{ClClCl}");
         bw.newLine();
-        bw.write(COLOR_WOCHENENDE + " & \\textbf{Wochenende} \\hspace*{15mm} & " + COLOR_URLAUB + " & Urlaub & "
-                + COLOR_DIENSTREISE + " & Dienstreise \\\\[1mm]");
+        bw.write(TypeOfDay.WEEKEND.getColor() + " & \\textbf{Wochenende} \\hspace*{15mm} & "
+                + TypeOfDay.VACATION.getColor() + " & Urlaub & " + TypeOfDay.BUSINESSTRIP.getColor()
+                + " & Dienstreise \\\\[1mm]");
         bw.newLine();
         bw.write("& & & \\\\");
         bw.newLine();
-        bw.write(COLOR_FEIERTAG + " & \\textbf{Feiertag} & " + COLOR_KRANKHEITSTAG + " & Krankheitstag & "
-                + COLOR_FORTBILDUNG + " & Fortbildung \\\\[1mm]");
+        bw.write(TypeOfDay.HOLIDAY.getColor() + " & \\textbf{Feiertag} & " + TypeOfDay.ILLNESS.getColor()
+                + " & Krankheitstag & " + TypeOfDay.STAFFTRAINING.getColor() + " & Fortbildung \\\\[1mm]");
         bw.newLine();
         bw.write("& & & \\\\");
         bw.newLine();
-        bw.write(COLOR_RAND + " & \\textbf{Kalenderwoche} & " + COLOR_STUNDENREDUZIERUNG
+        bw.write(COLOR_RAND + " & \\textbf{Kalenderwoche} & " + TypeOfDay.HOURREDUCTION.getColor()
                 + " & Überstundenreduzierung \\hspace*{15mm} & " + COLOR_SONSTIGER_KOMMENTAR
                 + " & sonstiger Kommentar \\\\[1mm]");
         bw.newLine();
@@ -521,9 +515,11 @@ public class FileSystemManager
     private void detailedMonthsTeX(Kalender cal, int page, BufferedWriter bw) throws IOException
     {
         LinkedList<Tag> monthLeftList = cal.getMonth((page - 1) * 2 + 1).values().stream()
-                .filter(tag -> !tag.isWeekend()).sorted().collect(Collectors.toCollection(LinkedList::new));
+                .filter(tag -> !(TypeOfDay.WEEKEND.equals(tag.getTypeOfDay()))).sorted()
+                .collect(Collectors.toCollection(LinkedList::new));
         LinkedList<Tag> monthRightList = cal.getMonth((page - 1) * 2 + 2).values().stream()
-                .filter(tag -> !tag.isWeekend()).sorted().collect(Collectors.toCollection(LinkedList::new));
+                .filter(tag -> !(TypeOfDay.WEEKEND.equals(tag.getTypeOfDay()))).sorted()
+                .collect(Collectors.toCollection(LinkedList::new));
 
         bw.write("\\vspace*{8mm}\\hspace*{-10mm}\\scalebox{0.84}{\\begin{tabular}{cc}");
         bw.newLine();
@@ -639,16 +635,26 @@ public class FileSystemManager
 
         while (datum.getYear() == kal.getYear())
         {
-            if (kal.getTag(datum).isVacation())
+            switch (kal.getTag(datum).getTypeOfDay())
+            {
+            case VACATION:
                 urlaubstage++;
-            if (kal.getTag(datum).isHourReduction())
+                break;
+            case HOURREDUCTION:
                 ueberstundentage++;
-            if (kal.getTag(datum).isIllness())
+                break;
+            case ILLNESS:
                 krankheitstage++;
-            if (kal.getTag(datum).isBusinessTrip())
+                break;
+            case BUSINESSTRIP:
                 dienstreisentage++;
-            if (kal.getTag(datum).isStaffTraining())
+                break;
+            case STAFFTRAINING:
                 fortbildungstage++;
+                break;
+            default:
+                break;
+            }
             datum.addToDayOfYear(1);
         }
 
@@ -704,35 +710,35 @@ public class FileSystemManager
         bw.newLine();
         bw.write(" " + COLOR_RAND);
         bw.write("\\textbf{Eingetragene Urlaubstage:} & ");
-        bw.write(" " + COLOR_URLAUB + Integer.toString(urlaubstage));
+        bw.write(" " + TypeOfDay.VACATION.getColor() + Integer.toString(urlaubstage));
         bw.write(" \\\\");
         bw.newLine();
         bw.write("%\\hline");
         bw.newLine();
         bw.write(" " + COLOR_RAND);
         bw.write("\\textbf{Überstundenreduzierungstage:} & ");
-        bw.write(" " + COLOR_STUNDENREDUZIERUNG + Integer.toString(ueberstundentage));
+        bw.write(" " + TypeOfDay.HOURREDUCTION.getColor() + Integer.toString(ueberstundentage));
         bw.write(" \\\\");
         bw.newLine();
         bw.write("%\\hline");
         bw.newLine();
         bw.write(" " + COLOR_RAND);
         bw.write("\\textbf{Krankheitstage:} & ");
-        bw.write(" " + COLOR_KRANKHEITSTAG + Integer.toString(krankheitstage));
+        bw.write(" " + TypeOfDay.ILLNESS.getColor() + Integer.toString(krankheitstage));
         bw.write(" \\\\");
         bw.newLine();
         bw.write("%\\hline");
         bw.newLine();
         bw.write(" " + COLOR_RAND);
         bw.write("\\textbf{Auf Dienstreise verbrachte Tage:} & ");
-        bw.write(" " + COLOR_DIENSTREISE + Integer.toString(dienstreisentage));
+        bw.write(" " + TypeOfDay.BUSINESSTRIP.getColor() + Integer.toString(dienstreisentage));
         bw.write(" \\\\");
         bw.newLine();
         bw.write("%\\hline");
         bw.newLine();
         bw.write(" " + COLOR_RAND);
         bw.write("\\textbf{Auf Fortbildung verbrachte Tage:} & ");
-        bw.write(" " + COLOR_FORTBILDUNG + Integer.toString(fortbildungstage));
+        bw.write(" " + TypeOfDay.STAFFTRAINING.getColor() + Integer.toString(fortbildungstage));
         bw.write(" \\\\");
         bw.newLine();
         bw.write("%\\hline");
@@ -744,34 +750,30 @@ public class FileSystemManager
     private String tagToCellInFrontPageMonthTeX(Tag tag)
     {
         String dayAsString = Integer.toString(tag.getDatum().getDay());
-
-        if (tag.isWeekend())
+        switch (tag.getTypeOfDay())
         {
-            return COLOR_WOCHENENDE + "\\textbf{" + dayAsString + "}";
-        } else if (tag.isHoliday())
-        {
-            return COLOR_FEIERTAG + "\\textbf{" + dayAsString + "}";
-        } else if (tag.isVacation())
-        {
-            return COLOR_URLAUB + dayAsString;
-        } else if (tag.isIllness())
-        {
-            return COLOR_KRANKHEITSTAG + dayAsString;
-        } else if (tag.isHourReduction())
-        {
-            return COLOR_STUNDENREDUZIERUNG + dayAsString;
-        } else if (tag.isBusinessTrip())
-        {
-            return COLOR_DIENSTREISE + dayAsString;
-        } else if (tag.isStaffTraining())
-        {
-            return COLOR_FORTBILDUNG + dayAsString;
-        } else if (tag.isKommentarSet())
-        {
-            return COLOR_SONSTIGER_KOMMENTAR + dayAsString;
-        } else
-        {
-            return dayAsString;
+        case WEEKEND:
+            return TypeOfDay.WEEKEND.getColor() + "\\textbf{" + dayAsString + "}";
+        case HOLIDAY:
+            return TypeOfDay.HOLIDAY.getColor() + "\\textbf{" + dayAsString + "}";
+        case VACATION:
+            return TypeOfDay.VACATION.getColor() + dayAsString;
+        case ILLNESS:
+            return TypeOfDay.ILLNESS.getColor() + dayAsString;
+        case HOURREDUCTION:
+            return TypeOfDay.HOURREDUCTION.getColor() + dayAsString;
+        case BUSINESSTRIP:
+            return TypeOfDay.BUSINESSTRIP.getColor() + dayAsString;
+        case STAFFTRAINING:
+            return TypeOfDay.STAFFTRAINING.getColor() + dayAsString;
+        default:
+            if (tag.isKommentarSet())
+            {
+                return COLOR_SONSTIGER_KOMMENTAR + dayAsString;
+            } else
+            {
+                return dayAsString;
+            }
         }
     }
 
@@ -785,15 +787,23 @@ public class FileSystemManager
         result = result.concat(Integer.toString(tag.getDatum().getDay()));
         result = result.concat(".} & ");
 
-        if (tag.isWorkingDay() || tag.isBusinessTrip() || tag.isStaffTraining() || tag.isOtherComment())
+        if (tag.isOtherComment() || TypeOfDay.WORKINGDAY.equals(tag.getTypeOfDay())
+                || TypeOfDay.BUSINESSTRIP.equals(tag.getTypeOfDay())
+                || TypeOfDay.STAFFTRAINING.equals(tag.getTypeOfDay()))
         {
             String color = "";
-            if (tag.isBusinessTrip())
-                color = COLOR_DIENSTREISE;
-            if (tag.isStaffTraining())
-                color = COLOR_FORTBILDUNG;
-            if (tag.isKommentarSet())
-                color = COLOR_SONSTIGER_KOMMENTAR;
+            switch (tag.getTypeOfDay())
+            {
+            case BUSINESSTRIP:
+                color = TypeOfDay.BUSINESSTRIP.getColor();
+                break;
+            case STAFFTRAINING:
+                color = TypeOfDay.STAFFTRAINING.getColor();
+                break;
+            default:
+                if (tag.isKommentarSet())
+                    color = COLOR_SONSTIGER_KOMMENTAR;
+            }
             result = result.concat(color + tag.getBegin().toString());
             result = result.concat(" & ");
             result = result.concat(color + tag.getEnd().toString());
@@ -807,19 +817,24 @@ public class FileSystemManager
 
             if (tag.isKommentarSet())
             {
-                if (tag.isBusinessTrip() || tag.isStaffTraining() || tag.isOtherComment())
+                if (tag.isOtherComment() || TypeOfDay.BUSINESSTRIP.equals(tag.getTypeOfDay())
+                        || TypeOfDay.STAFFTRAINING.equals(tag.getTypeOfDay()))
                 {
                     result = result.concat("\\\\");
                     result = result.concat(System.getProperty("line.separator"));
                     result = result.concat("\\multicolumn{7}{c}{");
-
-                    if (tag.isBusinessTrip())
-                        result = result.concat(COLOR_DIENSTREISE);
-                    else if (tag.isStaffTraining())
-                        result = result.concat(COLOR_FORTBILDUNG);
-                    else if (tag.isOtherComment())
-                        result = result.concat(COLOR_SONSTIGER_KOMMENTAR);
-
+                    switch (tag.getTypeOfDay())
+                    {
+                    case BUSINESSTRIP:
+                        result = result.concat(TypeOfDay.BUSINESSTRIP.getColor());
+                        break;
+                    case STAFFTRAINING:
+                        result = result.concat(TypeOfDay.STAFFTRAINING.getColor());
+                        break;
+                    default:
+                        if (tag.isKommentarSet())
+                            result = result.concat(COLOR_SONSTIGER_KOMMENTAR);
+                    }
                     result = result.concat(" \\textbf{");
                     result = result.concat(tag.getKommentar());
                     result = result.concat("}} ");
@@ -828,16 +843,23 @@ public class FileSystemManager
         } else
         {
             result = result.concat("\\multicolumn{5}{c}{");
-
-            if (tag.isHoliday())
-                result = result.concat(COLOR_FEIERTAG);
-            else if (tag.isVacation())
-                result = result.concat(COLOR_URLAUB);
-            else if (tag.isIllness())
-                result = result.concat(COLOR_KRANKHEITSTAG);
-            else if (tag.isHourReduction())
-                result = result.concat(COLOR_STUNDENREDUZIERUNG);
-
+            switch (tag.getTypeOfDay())
+            {
+            case HOLIDAY:
+                result = result.concat(TypeOfDay.HOLIDAY.getColor());
+                break;
+            case VACATION:
+                result = result.concat(TypeOfDay.VACATION.getColor());
+                break;
+            case ILLNESS:
+                result = result.concat(TypeOfDay.ILLNESS.getColor());
+                break;
+            case HOURREDUCTION:
+                result = result.concat(TypeOfDay.HOURREDUCTION.getColor());
+                break;
+            default:
+                break;
+            }
             result = result.concat(" \\textbf{");
             result = result.concat(tag.getKommentar());
             result = result.concat("}} ");
@@ -916,7 +938,7 @@ public class FileSystemManager
     }
 
     /**
-     * This method returns a List of all the filenames of the calendars in the
+     * This method returns a List of all filenames of the calendars in the
      * WH_CAL_DATA_FOLDER.
      *
      * @return A LinkedList of Strings representing the names of the files

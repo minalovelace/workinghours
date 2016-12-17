@@ -8,6 +8,7 @@ public class KalenderManager
 
     public KalenderManager()
     {
+        // nothing to do
     }
 
     public String generatePDF()
@@ -30,7 +31,7 @@ public class KalenderManager
         Datum datum = new Datum(datumString);
         Kalender kal = getFsm().loadNewestKalender();
         Tag tag = kal.getTag(datum);
-        tag.setBusinessTrip(true);
+        tag.setTypeOfDay(TypeOfDay.BUSINESSTRIP);
         kal.putTag(tag);
         getFsm().saveKalender(kal);
         return kal;
@@ -58,7 +59,7 @@ public class KalenderManager
         Tag oldTag = kal.getTag(datum);
         Tag newTag = new Tag(datum);
         newTag.setKommentar(oldTag.getKommentar());
-        newTag.setHourReduction(true);
+        newTag.setTypeOfDay(TypeOfDay.HOURREDUCTION);
         kal.putTag(newTag);
         getFsm().saveKalender(kal);
         return kal;
@@ -71,7 +72,7 @@ public class KalenderManager
         Tag oldTag = kal.getTag(datum);
         Tag newTag = new Tag(datum);
         newTag.setKommentar(oldTag.getKommentar());
-        newTag.setIllness(true);
+        newTag.setTypeOfDay(TypeOfDay.ILLNESS);
         kal.putTag(newTag);
         getFsm().saveKalender(kal);
         return kal;
@@ -82,7 +83,7 @@ public class KalenderManager
         Datum datum = new Datum(datumString);
         Kalender kal = getFsm().loadNewestKalender();
         Tag tag = kal.getTag(datum);
-        tag.setStaffTraining(true);
+        tag.setTypeOfDay(TypeOfDay.STAFFTRAINING);
         kal.putTag(tag);
         getFsm().saveKalender(kal);
         return kal;
@@ -95,7 +96,7 @@ public class KalenderManager
         Tag oldTag = kal.getTag(datum);
         Tag newTag = new Tag(datum);
         newTag.setKommentar(oldTag.getKommentar());
-        newTag.setVacation(true);
+        newTag.setTypeOfDay(TypeOfDay.VACATION);
         kal.putTag(newTag);
         getFsm().saveKalender(kal);
         return kal;
@@ -118,7 +119,7 @@ public class KalenderManager
         Uhrzeit beginn = new Uhrzeit(uhrzeitStart);
         Uhrzeit ende = new Uhrzeit(uhrzeitEnd);
         Integer pause = Integer.parseInt(pauseString);
-        Tag tag = new Tag(datum, beginn, ende, pause, true, false, false);
+        Tag tag = new Tag(datum, beginn, ende, pause, TypeOfDay.WORKINGDAY);
         Kalender kal = getFsm().loadNewestKalender();
         kal.putTag(tag);
         getFsm().saveKalender(kal);
@@ -156,7 +157,7 @@ public class KalenderManager
         Uhrzeit beginn = new Uhrzeit(now.getHour(), now.getMinute());
         Uhrzeit ende = new Uhrzeit(now.getHour(), now.getMinute());
         Integer pause = getFsm().getStandardTimeForPause();
-        Tag tag = new Tag(datum, beginn, ende, pause, true, false, false);
+        Tag tag = new Tag(datum, beginn, ende, pause, TypeOfDay.WORKINGDAY);
         Kalender kal = getFsm().loadNewestKalender();
         kal.putTag(tag);
         getFsm().saveKalender(kal);

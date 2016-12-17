@@ -4,7 +4,6 @@ import com.google.gson.annotations.SerializedName;
 
 class Tag implements Comparable<Tag>
 {
-
     private final int WORKING_DAY_MINUTES = 480;
     @SerializedName("datum")
     private Datum m_datum;
@@ -16,24 +15,10 @@ class Tag implements Comparable<Tag>
     private int m_pause = 0;
     @SerializedName("kommentar")
     private String m_kommentar = "";
-    @SerializedName("workingDay")
-    private boolean m_workingDay = false;
-    @SerializedName("illness")
-    private boolean m_illness = false;
-    @SerializedName("hourReduction")
-    private boolean m_hourReduction = false;
-    @SerializedName("holiday")
-    private boolean m_holiday = false;
-    @SerializedName("vacation")
-    private boolean m_vacation = false;
-    @SerializedName("weekend")
-    private boolean m_weekend = false;
-    @SerializedName("businessTrip")
-    private boolean m_businessTrip = false;
-    @SerializedName("staffTraining")
-    private boolean m_staffTraining = false;
     @SerializedName("kommentarSet")
     private boolean m_kommentarSet = false;
+    @SerializedName("typeOfDay")
+    private TypeOfDay m_typeOfDay;
 
     Tag(Datum day)
     {
@@ -45,36 +30,23 @@ class Tag implements Comparable<Tag>
      * the date, starting time, ending time and duration of break. Other days
      * are days of illness, hour-reduction, holiday or weekend.
      */
-    Tag(Datum day, boolean illness, boolean hourReduction, boolean holiday, boolean vacation, boolean weekend)
+    Tag(Datum day, TypeOfDay typeOfDay)
     {
         m_datum = day;
-        m_illness = illness;
-        m_hourReduction = hourReduction;
-        m_holiday = holiday;
-        m_vacation = vacation;
-        m_weekend = weekend;
-
+        m_typeOfDay = typeOfDay;
     }
 
     /**
      * A Call to this constructor generates a normal working-day, which means
      * that isWorkingDay() returns <code>true</code>.
-     *
-     * @param day
-     * @param begin
-     * @param end
-     * @param pause
      */
-    Tag(Datum day, Uhrzeit begin, Uhrzeit end, int pause, boolean workingDay, boolean businessTrip,
-            boolean staffTraining)
+    Tag(Datum day, Uhrzeit begin, Uhrzeit end, int pause, TypeOfDay typeOfDay)
     {
         m_datum = day;
         m_begin = begin;
         m_end = end;
         m_pause = pause;
-        m_workingDay = workingDay;
-        m_businessTrip = businessTrip;
-        m_staffTraining = staffTraining;
+        m_typeOfDay = typeOfDay;
     }
 
     Datum getDatum()
@@ -139,79 +111,16 @@ class Tag implements Comparable<Tag>
         return m_kommentarSet;
     }
 
-    boolean isWorkingDay()
+    TypeOfDay getTypeOfDay()
     {
-        return m_workingDay;
+        if (m_typeOfDay == null)
+            m_typeOfDay = TypeOfDay.WORKINGDAY;
+        return m_typeOfDay;
     }
 
-    void setWorkingDay(boolean workingDay)
+    void setTypeOfDay(TypeOfDay typeOfDay)
     {
-        m_workingDay = workingDay;
-    }
-
-    boolean isIllness()
-    {
-        return m_illness;
-    }
-
-    void setIllness(boolean illness)
-    {
-        m_illness = illness;
-    }
-
-    boolean isHourReduction()
-    {
-        return m_hourReduction;
-    }
-
-    void setHourReduction(boolean hourReduction)
-    {
-        m_hourReduction = hourReduction;
-    }
-
-    boolean isHoliday()
-    {
-        return m_holiday;
-    }
-
-    void setHoliday(boolean holiday)
-    {
-        m_holiday = holiday;
-    }
-
-    boolean isVacation()
-    {
-        return m_vacation;
-    }
-
-    void setVacation(boolean vacation)
-    {
-        m_vacation = vacation;
-    }
-
-    boolean isBusinessTrip()
-    {
-        return m_businessTrip;
-    }
-
-    void setBusinessTrip(boolean businessTrip)
-    {
-        m_businessTrip = businessTrip;
-    }
-
-    boolean isStaffTraining()
-    {
-        return m_staffTraining;
-    }
-
-    void setStaffTraining(boolean staffTraining)
-    {
-        m_staffTraining = staffTraining;
-    }
-
-    boolean isWeekend()
-    {
-        return m_weekend;
+        m_typeOfDay = typeOfDay;
     }
 
     @Override
@@ -228,7 +137,7 @@ class Tag implements Comparable<Tag>
         if (0 < minutesFromBeginToEnd)
         {
             return minutesFromBeginToEnd - getPause() - WORKING_DAY_MINUTES;
-        } else if (isHourReduction())
+        } else if (TypeOfDay.HOURREDUCTION.equals(m_typeOfDay))
         {
             return -WORKING_DAY_MINUTES;
         } else
@@ -239,7 +148,6 @@ class Tag implements Comparable<Tag>
 
     boolean isOtherComment()
     {
-        return isKommentarSet() && !(isBusinessTrip() || isStaffTraining() || isHoliday() || isHourReduction()
-                || isIllness() || isVacation() || isWeekend());
+        return isKommentarSet() && TypeOfDay.WORKINGDAY.equals(m_typeOfDay);
     }
 }
