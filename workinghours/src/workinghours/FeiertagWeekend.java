@@ -112,7 +112,7 @@ class FeiertagWeekend
         /* Find all weekends */
         GregorianCalendar cal = new GregorianCalendar(m_jahr, 0, 1);
         /*
-         * The while loop ensures that you are only checking dates in the
+         * The while loop ensures that we are only checking dates in the
          * specified year.
          */
         while (cal.get(GregorianCalendar.YEAR) == m_jahr)
@@ -130,7 +130,22 @@ class FeiertagWeekend
             }
             cal.add(GregorianCalendar.DAY_OF_YEAR, 1);
         }
+        
+        /* Calculate special holidays of the specified year. */
+        specialHolidays(tage);
+        
         return tage;
+    }
+
+    private void specialHolidays(HashMap<Integer, Tag> tage)
+    {
+        if(m_jahr == 2017)
+        {
+            GregorianCalendar luther = new GregorianCalendar(m_jahr, 9, 31);
+            Tag lutherTag = new Tag(new Datum(luther), TypeOfDay.HOLIDAY);
+            lutherTag.setKommentar("500. Reformationstag");
+            tage.put(luther.get(Calendar.DAY_OF_YEAR), lutherTag);
+        }
     }
 
     /**
