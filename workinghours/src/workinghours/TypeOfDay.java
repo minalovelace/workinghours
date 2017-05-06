@@ -7,7 +7,7 @@ public enum TypeOfDay
     HOLIDAY("holiday", "\\cellcolor{blue!30}"),
     HOURREDUCTION("hourReduction", "\\cellcolor{orange!80}"),
     ILLNESS("illness", "\\cellcolor{red!65}"),
-    STAFFTRAINING("staffTraining", "\\cellcolor{pink!80!gray}"),
+    STAFFTRAINING("staffTraining", "\\cellcolor{cyan!20}"),
     VACATION("vacation", "\\cellcolor{green!40!gray}"),
     WEEKEND("weekend", "\\cellcolor{blue!15}"),
     WORKINGDAY("workingDay", "");

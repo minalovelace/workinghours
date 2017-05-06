@@ -42,7 +42,7 @@ public class FileSystemManager
     private static final Path PFAD = Paths.get(WH_CAL_DATA_FOLDER);
     private static final String COLOR_RAND = "\\cellcolor{gray!40}";
     private static final String COLOR_ECKE = "\\cellcolor{gray!60}";
-    private static final String COLOR_SONSTIGER_KOMMENTAR = "\\cellcolor{pink!60!gray}";
+    private static final String COLOR_SONSTIGER_KOMMENTAR = "\\cellcolor{yellow!60}";
     private static final String PDFLATEX_DEFAULT_MAC = "/Library/TeX/texbin/pdflatex";
     // private static final String PDFLATEX_DEFAULT_WIN = "C:/Program
     // Files/MiKTeX 2.9/miktex/bin/x64/pdflatex.exe";
