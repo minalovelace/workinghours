@@ -1,7 +1,5 @@
 package workinghours;
 
-import restserver.JerseyStarterService;
-
 class CommandLineInterpreterManager
 {
     private KalenderManager m_km = new KalenderManager();
@@ -20,9 +18,6 @@ class CommandLineInterpreterManager
             } else if (args[0].equals("-ar"))
             {
                 getKm().produceArchive();
-            } else if (args[0].equals("-r"))
-            {
-                JerseyStarterService.startJersey();
             } else if (args[0].equals("-man"))
             {
                 getManual();
