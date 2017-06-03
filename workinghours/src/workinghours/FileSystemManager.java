@@ -64,8 +64,8 @@ public class FileSystemManager
         File iniFile = new File(PFAD.toAbsolutePath().toString(), INIFILE);
         Map<String, String> iniVars = new HashMap<>();
         iniVars.put("copyPDFPath", null);
-        iniVars.put("maxSavedActualCals", "256");
-        iniVars.put("maxSavedTotalCals", "64");
+        iniVars.put("maxSavedTotalCals", "256");
+        iniVars.put("maxSavedActualCals", "64");
         iniVars.put("standardTimeForPause", "45");
         iniVars.put("pdflatex", PDFLATEX_DEFAULT_MAC);
 
@@ -94,8 +94,8 @@ public class FileSystemManager
                 e.printStackTrace();
             }
         }
-        setMaxSavedActualCals(Integer.parseInt(iniVars.get("maxSavedActualCals")));
         setMaxSavedTotalCals(Integer.parseInt(iniVars.get("maxSavedTotalCals")));
+        setMaxSavedActualCals(Integer.parseInt(iniVars.get("maxSavedActualCals")));
         setPDFLATEX(iniVars.get("pdflatex"));
         setCopyPDFPath(iniVars.get("copyPDFPath"));
         setStandardTimeForPause(Integer.parseInt(iniVars.get("standardTimeForPause")));
@@ -787,8 +787,12 @@ public class FileSystemManager
         result = result.concat(Integer.toString(tag.getDatum().getDay()));
         result = result.concat(".} & ");
 
-        if (tag.isOtherComment() || TypeOfDay.WORKINGDAY.equals(tag.getTypeOfDay())
-                || TypeOfDay.BUSINESSTRIP.equals(tag.getTypeOfDay())
+        boolean businessTripWithoutTimes = TypeOfDay.BUSINESSTRIP.equals(tag.getTypeOfDay())
+                && tag.getBegin().getTotalMinutes() == 0 && tag.getEnd().getTotalMinutes() == 0 && tag.getPause() == 0;
+
+        boolean businessTripWithTimes = !businessTripWithoutTimes && TypeOfDay.BUSINESSTRIP.equals(tag.getTypeOfDay());
+
+        if (tag.isOtherComment() || businessTripWithTimes || TypeOfDay.WORKINGDAY.equals(tag.getTypeOfDay())
                 || TypeOfDay.STAFFTRAINING.equals(tag.getTypeOfDay()))
         {
             String color = "";
@@ -858,6 +862,8 @@ public class FileSystemManager
                 result = result.concat(TypeOfDay.HOURREDUCTION.getColor());
                 break;
             default:
+                if (businessTripWithoutTimes)
+                    result = result.concat(TypeOfDay.BUSINESSTRIP.getColor());
                 break;
             }
             result = result.concat(" \\textbf{");
