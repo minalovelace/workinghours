@@ -7,7 +7,7 @@ pipeline {
 		stage ('Build') {
 			agent any
 			steps {
-				withEnv(["JAVA_HOME=${ tool 'JDK8_131' }", "PATH+ANT_HOME=${tool 'Ant_1.10.1'}\bin"]) {
+				withEnv(["JAVA_HOME=${ tool 'JDK8_131' }", "ANT_HOME=${tool 'Ant_1.10.1'}\\bin", "PATH+ANT_HOME=${env.ANT_HOME}"]) {
 					git branch: '$BRANCH_NAME', url: 'https://github.com/minalovelace/workinghours'
 					bat 'echo PATH: %PATH%'
 					echo "-------------------------"
