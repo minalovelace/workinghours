@@ -787,13 +787,7 @@ public class FileSystemManager
         result = result.concat(Integer.toString(tag.getDatum().getDay()));
         result = result.concat(".} & ");
 
-        boolean businessTripWithoutTimes = TypeOfDay.BUSINESSTRIP.equals(tag.getTypeOfDay())
-                && tag.getBegin().getTotalMinutes() == 0 && tag.getEnd().getTotalMinutes() == 0 && tag.getPause() == 0;
-
-        boolean businessTripWithTimes = !businessTripWithoutTimes && TypeOfDay.BUSINESSTRIP.equals(tag.getTypeOfDay());
-
-        if (tag.isOtherComment() || businessTripWithTimes || TypeOfDay.WORKINGDAY.equals(tag.getTypeOfDay())
-                || TypeOfDay.STAFFTRAINING.equals(tag.getTypeOfDay()))
+        if (!tag.isNull())
         {
             String color = "";
             switch (tag.getTypeOfDay())
@@ -849,6 +843,9 @@ public class FileSystemManager
             result = result.concat("\\multicolumn{5}{c}{");
             switch (tag.getTypeOfDay())
             {
+            case BUSINESSTRIP:
+                result = result.concat(TypeOfDay.BUSINESSTRIP.getColor());
+                break;
             case HOLIDAY:
                 result = result.concat(TypeOfDay.HOLIDAY.getColor());
                 break;
@@ -861,9 +858,11 @@ public class FileSystemManager
             case HOURREDUCTION:
                 result = result.concat(TypeOfDay.HOURREDUCTION.getColor());
                 break;
+            case STAFFTRAINING:
+                result = result.concat(TypeOfDay.STAFFTRAINING.getColor());
+                break;
             default:
-                if (businessTripWithoutTimes)
-                    result = result.concat(TypeOfDay.BUSINESSTRIP.getColor());
+                result = result.concat(COLOR_SONSTIGER_KOMMENTAR);
                 break;
             }
             result = result.concat(" \\textbf{");

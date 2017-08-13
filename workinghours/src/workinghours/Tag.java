@@ -146,6 +146,11 @@ class Tag implements Comparable<Tag>
         }
     }
 
+    boolean isNull()
+    {
+        return getBegin().getTotalMinutes() == 0 && getEnd().getTotalMinutes() == 0 && getPause() == 0;
+    }
+
     boolean isOtherComment()
     {
         return isKommentarSet() && TypeOfDay.WORKINGDAY.equals(m_typeOfDay);
