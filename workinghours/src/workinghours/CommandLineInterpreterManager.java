@@ -72,6 +72,9 @@ class CommandLineInterpreterManager
             if (args[0].equals("-k"))
             {
                 getKm().setKommentar(args[1], args[2]);
+            } else if (args[0].equals("-v"))
+            {
+                getKm().setPartialVacation(args[1], args[2]);
             }
         } else if (args.length == 5)
         {

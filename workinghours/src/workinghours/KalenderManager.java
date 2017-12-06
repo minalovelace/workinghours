@@ -134,6 +134,21 @@ public class KalenderManager
         return kal;
     }
 
+    public Kalender setPartialVacation(String datumString, String partialVacationString)
+    {
+        Datum datum = new Datum(datumString);
+        Kalender kal = getFsm().loadNewestKalender();
+        Tag oldTag = kal.getTag(datum);
+        Tag newTag = new Tag(datum);
+        newTag.setKommentar(oldTag.getKommentar());
+        newTag.setTypeOfDay(TypeOfDay.PARTIALVACATION);
+        Integer partialVacation = Integer.parseInt(partialVacationString);
+        newTag.setPartialVacation(partialVacation);
+        kal.putTag(newTag);
+        getFsm().saveKalender(kal);
+        return kal;
+    }
+
     public Kalender loadNewestKalender()
     {
         try

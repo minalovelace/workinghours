@@ -9,6 +9,7 @@ public enum TypeOfDay
     ILLNESS("illness", "\\cellcolor{red!65}"),
     STAFFTRAINING("staffTraining", "\\cellcolor{cyan!20}"),
     VACATION("vacation", "\\cellcolor{green!40!gray}"),
+    PARTIALVACATION("partialvacation", "\\cellcolor{green!40!gray}"),
     WEEKEND("weekend", "\\cellcolor{blue!15}"),
     WORKINGDAY("workingDay", "");
     // @formatter:on
