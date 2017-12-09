@@ -689,13 +689,13 @@ public class FileSystemManager
         String partielleUrlaubstageString = "";
         if (partielleUrlaubstage > 0)
         {
-            partielleUrlaubstageString += " und ";
+            partielleUrlaubstageString += " Tage und ";
             int partielleUrlaubstageStunden = partielleUrlaubstage / 60;
             int partielleUrlaubstageMinuten = partielleUrlaubstage % 60;
 
             while (partielleUrlaubstageStunden > 7)
             {
-                partielleUrlaubstage = partielleUrlaubstage - 8;
+                partielleUrlaubstageStunden = partielleUrlaubstageStunden - 8;
                 urlaubstage++;
             }
 
@@ -790,6 +790,8 @@ public class FileSystemManager
             return TypeOfDay.HOLIDAY.getColor() + "\\textbf{" + dayAsString + "}";
         case VACATION:
             return TypeOfDay.VACATION.getColor() + dayAsString;
+        case PARTIALVACATION:
+            return TypeOfDay.PARTIALVACATION.getColor() + dayAsString;
         case ILLNESS:
             return TypeOfDay.ILLNESS.getColor() + dayAsString;
         case HOURREDUCTION:
@@ -819,7 +821,7 @@ public class FileSystemManager
         result = result.concat(Integer.toString(tag.getDatum().getDay()));
         result = result.concat(".} & ");
 
-        if (!tag.isNull())
+        if (!tag.isNotWorkedAt())
         {
             String color = "";
             switch (tag.getTypeOfDay())
@@ -829,6 +831,9 @@ public class FileSystemManager
                 break;
             case STAFFTRAINING:
                 color = TypeOfDay.STAFFTRAINING.getColor();
+                break;
+            case PARTIALVACATION:
+                color = TypeOfDay.PARTIALVACATION.getColor();
                 break;
             default:
                 if (tag.isKommentarSet())
@@ -883,6 +888,9 @@ public class FileSystemManager
                 break;
             case VACATION:
                 result = result.concat(TypeOfDay.VACATION.getColor());
+                break;
+            case PARTIALVACATION:
+                result = result.concat(TypeOfDay.PARTIALVACATION.getColor());
                 break;
             case ILLNESS:
                 result = result.concat(TypeOfDay.ILLNESS.getColor());

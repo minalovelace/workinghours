@@ -20,7 +20,7 @@ class Tag implements Comparable<Tag>
     @SerializedName("typeOfDay")
     private TypeOfDay m_typeOfDay;
     @SerializedName("partialVacation")
-    private int m_partialVacation;
+    private int m_partialVacation = 0;
 
     Tag(Datum day)
     {
@@ -161,7 +161,7 @@ class Tag implements Comparable<Tag>
             m_partialVacation = partialVacation;
     }
 
-    boolean isNull()
+    boolean isNotWorkedAt()
     {
         return getBegin().getTotalMinutes() == 0 && getEnd().getTotalMinutes() == 0 && getPause() == 0;
     }

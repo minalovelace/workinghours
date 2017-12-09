@@ -140,6 +140,9 @@ public class KalenderManager
         Kalender kal = getFsm().loadNewestKalender();
         Tag oldTag = kal.getTag(datum);
         Tag newTag = new Tag(datum);
+        newTag.setBegin(oldTag.getBegin());
+        newTag.setEnd(oldTag.getEnd());
+        newTag.setPause(oldTag.getPause());
         newTag.setKommentar(oldTag.getKommentar());
         newTag.setTypeOfDay(TypeOfDay.PARTIALVACATION);
         Integer partialVacation = Integer.parseInt(partialVacationString);
