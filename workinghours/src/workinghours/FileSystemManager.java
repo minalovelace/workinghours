@@ -304,8 +304,7 @@ public class FileSystemManager
         }
 
         /*
-         * end of months for the first page followed by the legend and a
-         * newpage-command
+         * end of months for the first page followed by the legend and a newpage-command
          */
 
         legendTeX(bw);
@@ -626,6 +625,7 @@ public class FileSystemManager
     private void statisticsTeX(Kalender kal, BufferedWriter bw) throws IOException
     {
         int urlaubstage = 0;
+        int partielleUrlaubstage = 0;
         int ueberstundentage = 0;
         int krankheitstage = 0;
         int dienstreisentage = 0;
@@ -635,11 +635,14 @@ public class FileSystemManager
 
         while (datum.getYear() == kal.getYear())
         {
-            switch (kal.getTag(datum).getTypeOfDay())
+            Tag tag = kal.getTag(datum);
+            switch (tag.getTypeOfDay())
             {
             case VACATION:
                 urlaubstage++;
                 break;
+            case PARTIALVACATION:
+                partielleUrlaubstage += tag.getPartialVacation();
             case HOURREDUCTION:
                 ueberstundentage++;
                 break;
@@ -683,6 +686,35 @@ public class FileSystemManager
             sigmaDeltaStundenMinutenString = "keine";
         }
 
+        String partielleUrlaubstageString = "";
+        if (partielleUrlaubstage > 0)
+        {
+            partielleUrlaubstageString += " Tage und ";
+            int partielleUrlaubstageStunden = partielleUrlaubstage / 60;
+            int partielleUrlaubstageMinuten = partielleUrlaubstage % 60;
+
+            while (partielleUrlaubstageStunden > 7)
+            {
+                partielleUrlaubstageStunden = partielleUrlaubstageStunden - 8;
+                urlaubstage++;
+            }
+
+            if (partielleUrlaubstageStunden > 0)
+            {
+                if (partielleUrlaubstageStunden > 1)
+                    partielleUrlaubstageString += Integer.toString(partielleUrlaubstageStunden) + " Stunden";
+                else
+                    partielleUrlaubstageString += Integer.toString(partielleUrlaubstageStunden) + " Stunde";
+            }
+            if (partielleUrlaubstageMinuten > 0)
+            {
+                if (partielleUrlaubstageMinuten > 1)
+                    partielleUrlaubstageString += " " + Integer.toString(partielleUrlaubstageMinuten) + " Minuten";
+                else
+                    partielleUrlaubstageString += " " + Integer.toString(partielleUrlaubstageMinuten) + " Minute";
+            }
+        }
+
         bw.newLine();
         bw.write("\\newpage");
         bw.newLine();
@@ -710,7 +742,7 @@ public class FileSystemManager
         bw.newLine();
         bw.write(" " + COLOR_RAND);
         bw.write("\\textbf{Eingetragene Urlaubstage:} & ");
-        bw.write(" " + TypeOfDay.VACATION.getColor() + Integer.toString(urlaubstage));
+        bw.write(" " + TypeOfDay.VACATION.getColor() + Integer.toString(urlaubstage) + partielleUrlaubstageString);
         bw.write(" \\\\");
         bw.newLine();
         bw.write("%\\hline");
@@ -758,6 +790,8 @@ public class FileSystemManager
             return TypeOfDay.HOLIDAY.getColor() + "\\textbf{" + dayAsString + "}";
         case VACATION:
             return TypeOfDay.VACATION.getColor() + dayAsString;
+        case PARTIALVACATION:
+            return TypeOfDay.PARTIALVACATION.getColor() + dayAsString;
         case ILLNESS:
             return TypeOfDay.ILLNESS.getColor() + dayAsString;
         case HOURREDUCTION:
@@ -787,7 +821,7 @@ public class FileSystemManager
         result = result.concat(Integer.toString(tag.getDatum().getDay()));
         result = result.concat(".} & ");
 
-        if (!tag.isNull())
+        if (!tag.isNotWorkedAt())
         {
             String color = "";
             switch (tag.getTypeOfDay())
@@ -797,6 +831,9 @@ public class FileSystemManager
                 break;
             case STAFFTRAINING:
                 color = TypeOfDay.STAFFTRAINING.getColor();
+                break;
+            case PARTIALVACATION:
+                color = TypeOfDay.PARTIALVACATION.getColor();
                 break;
             default:
                 if (tag.isKommentarSet())
@@ -851,6 +888,9 @@ public class FileSystemManager
                 break;
             case VACATION:
                 result = result.concat(TypeOfDay.VACATION.getColor());
+                break;
+            case PARTIALVACATION:
+                result = result.concat(TypeOfDay.PARTIALVACATION.getColor());
                 break;
             case ILLNESS:
                 result = result.concat(TypeOfDay.ILLNESS.getColor());

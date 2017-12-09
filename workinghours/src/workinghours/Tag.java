@@ -19,6 +19,8 @@ class Tag implements Comparable<Tag>
     private boolean m_kommentarSet = false;
     @SerializedName("typeOfDay")
     private TypeOfDay m_typeOfDay;
+    @SerializedName("partialVacation")
+    private int m_partialVacation = 0;
 
     Tag(Datum day)
     {
@@ -26,9 +28,9 @@ class Tag implements Comparable<Tag>
     }
 
     /**
-     * A day consists of different settings. A normal working day consists of
-     * the date, starting time, ending time and duration of break. Other days
-     * are days of illness, hour-reduction, holiday or weekend.
+     * A day consists of different settings. A normal working day consists of the
+     * date, starting time, ending time and duration of break. Other days are days
+     * of illness, hour-reduction, holiday or weekend.
      */
     Tag(Datum day, TypeOfDay typeOfDay)
     {
@@ -37,8 +39,8 @@ class Tag implements Comparable<Tag>
     }
 
     /**
-     * A Call to this constructor generates a normal working-day, which means
-     * that isWorkingDay() returns <code>true</code>.
+     * A Call to this constructor generates a normal working-day, which means that
+     * isWorkingDay() returns <code>true</code>.
      */
     Tag(Datum day, Uhrzeit begin, Uhrzeit end, int pause, TypeOfDay typeOfDay)
     {
@@ -136,7 +138,7 @@ class Tag implements Comparable<Tag>
         int minutesFromBeginToEnd = getEnd().getTotalMinutes() - getBegin().getTotalMinutes();
         if (0 < minutesFromBeginToEnd)
         {
-            return minutesFromBeginToEnd - getPause() - WORKING_DAY_MINUTES;
+            return minutesFromBeginToEnd - getPause() + getPartialVacation() - WORKING_DAY_MINUTES;
         } else if (TypeOfDay.HOURREDUCTION.equals(m_typeOfDay))
         {
             return -WORKING_DAY_MINUTES;
@@ -146,7 +148,20 @@ class Tag implements Comparable<Tag>
         }
     }
 
-    boolean isNull()
+    int getPartialVacation()
+    {
+        return m_partialVacation;
+    }
+
+    void setPartialVacation(int partialVacation)
+    {
+        if (partialVacation < 0)
+            m_partialVacation = 0;
+        else
+            m_partialVacation = partialVacation;
+    }
+
+    boolean isNotWorkedAt()
     {
         return getBegin().getTotalMinutes() == 0 && getEnd().getTotalMinutes() == 0 && getPause() == 0;
     }

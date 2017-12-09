@@ -72,6 +72,9 @@ class CommandLineInterpreterManager
             if (args[0].equals("-k"))
             {
                 getKm().setKommentar(args[1], args[2]);
+            } else if (args[0].equals("-v"))
+            {
+                getKm().setPartialVacation(args[1], args[2]);
             }
         } else if (args.length == 5)
         {
@@ -155,6 +158,9 @@ class CommandLineInterpreterManager
         System.out.println("");
         System.out.println("-v");
         System.out.println("     Followed by the date of a vacation.");
+        System.out.println("     If you want to set a partial vacation day, insert it as a normal");
+        System.out.println("     workingday first. Then you can use '-v <date> <time in minutes>'");
+        System.out.println("     to set a partial vacation day.");
         System.out.println("");
     }
 
