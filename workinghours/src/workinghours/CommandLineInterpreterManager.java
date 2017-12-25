@@ -144,9 +144,6 @@ class CommandLineInterpreterManager
         System.out.println("-pdf");
         System.out.println("     This command produces the pdf-file.");
         System.out.println("");
-        System.out.println("-r");
-        System.out.println("     Starts the REST-Server.");
-        System.out.println("");
         System.out.println("-s");
         System.out.println("     Followed by the date of a day, which is a staff training day.");
         System.out.println("");

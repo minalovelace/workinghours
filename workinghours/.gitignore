@@ -1,7 +1,4 @@
 /bin/
 /.metadata/*
 /target/
-<<<<<<< Upstream, based on master
 /.DS_Store
-=======
->>>>>>> 7e25e13 squash
