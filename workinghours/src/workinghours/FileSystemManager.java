@@ -181,29 +181,6 @@ public class FileSystemManager
         }
     }
 
-    void undo()
-    {
-        if (m_tmpIndex == null)
-        {
-            m_tmpIndex = getAllSavedCals().size() - 2;
-        } else if (m_tmpIndex > 0)
-        {
-            m_tmpIndex--;
-        }
-    }
-
-    void redo()
-    {
-        if (m_tmpIndex != null)
-        {
-            m_tmpIndex++;
-            if (getAllSavedCals().size() - 2 < m_tmpIndex)
-            {
-                m_tmpIndex = null;
-            }
-        }
-    }
-
     Kalender loadTmpKalender()
     {
         if ((m_tmpIndex > 0) && (m_tmpIndex < getAllSavedCals().size()))
