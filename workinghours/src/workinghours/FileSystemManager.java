@@ -666,7 +666,7 @@ public class FileSystemManager
         String partielleUrlaubstageString = "";
         if (partielleUrlaubstage > 0)
         {
-            partielleUrlaubstageString += " Tage und ";
+            partielleUrlaubstageString += " Tage";
             int partielleUrlaubstageStunden = partielleUrlaubstage / 60;
             int partielleUrlaubstageMinuten = partielleUrlaubstage % 60;
 
@@ -679,9 +679,9 @@ public class FileSystemManager
             if (partielleUrlaubstageStunden > 0)
             {
                 if (partielleUrlaubstageStunden > 1)
-                    partielleUrlaubstageString += Integer.toString(partielleUrlaubstageStunden) + " Stunden";
+                    partielleUrlaubstageString += " " + Integer.toString(partielleUrlaubstageStunden) + " Stunden";
                 else
-                    partielleUrlaubstageString += Integer.toString(partielleUrlaubstageStunden) + " Stunde";
+                    partielleUrlaubstageString += " " + Integer.toString(partielleUrlaubstageStunden) + " Stunde";
             }
             if (partielleUrlaubstageMinuten > 0)
             {
@@ -719,6 +719,7 @@ public class FileSystemManager
         bw.newLine();
         bw.write(" " + COLOR_RAND);
         bw.write("\\textbf{Eingetragene Urlaubstage:} & ");
+        // TODO Think about a better format for partial vacations
         bw.write(" " + TypeOfDay.VACATION.getColor() + Integer.toString(urlaubstage) + partielleUrlaubstageString);
         bw.write(" \\\\");
         bw.newLine();
