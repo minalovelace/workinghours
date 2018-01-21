@@ -1,7 +1,5 @@
 package workinghours;
 
-import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
-
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -31,6 +29,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import com.google.gson.Gson;
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
 public class FileSystemManager
 {
@@ -663,34 +662,7 @@ public class FileSystemManager
             sigmaDeltaStundenMinutenString = "keine";
         }
 
-        String partielleUrlaubstageString = "";
-        if (partielleUrlaubstage > 0)
-        {
-            partielleUrlaubstageString += " Tage";
-            int partielleUrlaubstageStunden = partielleUrlaubstage / 60;
-            int partielleUrlaubstageMinuten = partielleUrlaubstage % 60;
-
-            while (partielleUrlaubstageStunden > 7)
-            {
-                partielleUrlaubstageStunden = partielleUrlaubstageStunden - 8;
-                urlaubstage++;
-            }
-
-            if (partielleUrlaubstageStunden > 0)
-            {
-                if (partielleUrlaubstageStunden > 1)
-                    partielleUrlaubstageString += " " + Integer.toString(partielleUrlaubstageStunden) + " Stunden";
-                else
-                    partielleUrlaubstageString += " " + Integer.toString(partielleUrlaubstageStunden) + " Stunde";
-            }
-            if (partielleUrlaubstageMinuten > 0)
-            {
-                if (partielleUrlaubstageMinuten > 1)
-                    partielleUrlaubstageString += " " + Integer.toString(partielleUrlaubstageMinuten) + " Minuten";
-                else
-                    partielleUrlaubstageString += " " + Integer.toString(partielleUrlaubstageMinuten) + " Minute";
-            }
-        }
+        String urlaub = calculateVacationString(urlaubstage, partielleUrlaubstage);
 
         bw.newLine();
         bw.write("\\newpage");
@@ -719,8 +691,7 @@ public class FileSystemManager
         bw.newLine();
         bw.write(" " + COLOR_RAND);
         bw.write("\\textbf{Eingetragene Urlaubstage:} & ");
-        // TODO Think about a better format for partial vacations
-        bw.write(" " + TypeOfDay.VACATION.getColor() + Integer.toString(urlaubstage) + partielleUrlaubstageString);
+        bw.write(" " + TypeOfDay.VACATION.getColor() + urlaub);
         bw.write(" \\\\");
         bw.newLine();
         bw.write("%\\hline");
@@ -755,6 +726,52 @@ public class FileSystemManager
         bw.newLine();
         bw.write("\\end{tabular}");
         bw.newLine();
+    }
+
+    private String calculateVacationString(int urlaubstage, int partielleUrlaubstage)
+    {
+        if (partielleUrlaubstage > 0)
+        {
+            int partielleUrlaubstageStunden = partielleUrlaubstage / 60;
+            int partielleUrlaubstageMinuten = partielleUrlaubstage % 60;
+
+            while (partielleUrlaubstageStunden > 7)
+            {
+                partielleUrlaubstageStunden = partielleUrlaubstageStunden - 8;
+                urlaubstage++;
+            }
+            String urlaub = Integer.toString(urlaubstage);
+
+            if (partielleUrlaubstageStunden > 0 || partielleUrlaubstageMinuten > 0)
+            {
+                if (urlaubstage > 1)
+                    urlaub += " Tage";
+                else
+                    urlaub += " Tag";
+
+                if (partielleUrlaubstageStunden > 0 && partielleUrlaubstageMinuten > 0)
+                    urlaub += ", ";
+                else
+                    urlaub += " und ";
+
+                if (partielleUrlaubstageStunden > 1)
+                    urlaub += Integer.toString(partielleUrlaubstageStunden) + " Stunden";
+
+                if (partielleUrlaubstageStunden == 1)
+                    urlaub += Integer.toString(partielleUrlaubstageStunden) + " Stunde";
+
+                if (partielleUrlaubstageStunden > 0 && partielleUrlaubstageMinuten > 0)
+                    urlaub += " und ";
+
+                if (partielleUrlaubstageMinuten > 1)
+                    urlaub += Integer.toString(partielleUrlaubstageMinuten) + " Minuten";
+
+                if (partielleUrlaubstageMinuten == 1)
+                    urlaub += Integer.toString(partielleUrlaubstageMinuten) + " Minute";
+            }
+            return urlaub;
+        }
+        return Integer.toString(urlaubstage);
     }
 
     private String tagToCellInFrontPageMonthTeX(Tag tag)
