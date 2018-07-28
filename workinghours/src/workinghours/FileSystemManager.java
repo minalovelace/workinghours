@@ -619,6 +619,7 @@ public class FileSystemManager
                 break;
             case PARTIALVACATION:
                 partielleUrlaubstage += tag.getPartialVacation();
+                break;
             case HOURREDUCTION:
                 ueberstundentage++;
                 break;
